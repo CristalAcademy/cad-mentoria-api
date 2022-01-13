@@ -5,6 +5,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -16,16 +18,14 @@ public class Candidato {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
-    public Integer idade; // TODO trocar para data de nascimento
+    public LocalDate dtNasc;
     public Boolean trabalha;
     public Boolean estuda;
-    public Integer hrsDisponiveis; // TODO trocar para enum de horas  2 - 4 - 6 - 8
+    public Integer hrsDisponiveis;
     public Boolean programou;
-    public String classeSocial; // TODO trocar para enum de classe social  6 faixas (risco , vuneravel, baixo , sustentavel , medio , alto)
-
-    // TODO adicionar modo de texto para essa coluna @Column(columnDefinition="TEXT")
-    public String descricaoPqMereceQuer; // TODO mudar nome do campo para motivacao
-    public Date marcarEntrevista; // TODO trocar nome do campo por entrevista
-    public Integer periodoDisponivel; // TODO trocar para nome disponibilidade e tranformar em enum (Manha  - Tarde - Noite
-    // )
+    public String classe;
+    @Column(columnDefinition = "TEXT")
+    public String motivacao;
+    public LocalDate entrevista;
+    public LocalDate disponibilidade;
 }
