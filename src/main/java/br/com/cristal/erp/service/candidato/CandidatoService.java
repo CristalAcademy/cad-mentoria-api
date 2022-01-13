@@ -8,7 +8,6 @@ import br.com.cristal.erp.repository.candidato.CandidatoRepository;
 import br.com.cristal.erp.repository.candidato.model.Candidato;
 import br.com.cristal.erp.service.candidato.mappers.CandidatoMapper;
 import lombok.AllArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -47,8 +46,10 @@ public class CandidatoService {
         candidatoRepository.delete(candidatoToBeDeleted);
     }
 
-    public List<Candidato> listAll(){
-        return candidatoRepository.findAll();
-    }
+    public List<CandidatoResponseBody> listAll(){
+        List<Candidato> candidatos = candidatoRepository.findAll();
+        List<CandidatoResponseBody> listaCandidatos = (List<CandidatoResponseBody>) candidatos.stream().map(candidato -> candidatoMapper.mapearCandidatoResponse(candidato));
 
+        return listaCandidatos;
+    }
 }
