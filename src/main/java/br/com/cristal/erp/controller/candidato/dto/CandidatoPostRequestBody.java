@@ -10,7 +10,6 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CandidatoPostRequestBody {
-    public Long id;
     public Integer idade;
     public Boolean trabalha;
     public Boolean estuda;
