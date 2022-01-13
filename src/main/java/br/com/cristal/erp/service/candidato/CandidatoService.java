@@ -10,6 +10,7 @@ import br.com.cristal.erp.service.candidato.mappers.CandidatoMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -48,7 +49,8 @@ public class CandidatoService {
 
     public List<CandidatoResponseBody> listAll(){
         List<Candidato> candidatos = candidatoRepository.findAll();
-        List<CandidatoResponseBody> listaCandidatos = (List<CandidatoResponseBody>) candidatos.stream().map(candidato -> candidatoMapper.mapearCandidatoResponse(candidato));
+        List<CandidatoResponseBody> listaCandidatos = new ArrayList<>();
+        candidatos.stream().forEach(candidato -> listaCandidatos.add(candidatoMapper.mapearCandidatoResponse(candidato)));
 
         return listaCandidatos;
     }
