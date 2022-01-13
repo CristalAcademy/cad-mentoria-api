@@ -22,6 +22,7 @@ public class CandidatoService {
     private CandidatoMapper candidatoMapper;
 
     public CandidatoResponseBody replace(CandidatoPutRequestBody candidatoToBeUpdated) {
+
         Candidato savedCandidato = findByIdOrThrowBadRequestException(candidatoToBeUpdated.getId());
         Candidato candidatoToBeSaved = candidatoMapper.mapearTabelaCandidato(candidatoToBeUpdated, savedCandidato);
         return candidatoMapper.mapearCandidatoResponse(candidatoRepository.save(candidatoToBeSaved));
