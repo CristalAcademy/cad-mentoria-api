@@ -19,9 +19,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CandidatoController {
 
-    private final CandidatoRepository candidatoRepository;
     private final CandidatoService candidatoService;
-    private final CandidatoMapper candidatoMapper;
 
     @PostMapping
     public ResponseEntity<CandidatoResponseBody> create(@RequestBody CandidatoPostRequestBody request){
@@ -54,5 +52,4 @@ public class CandidatoController {
         candidatoService.delete(id);
         return ResponseEntity.noContent().build();
     }
-
 }
