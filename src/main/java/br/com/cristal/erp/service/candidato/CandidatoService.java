@@ -35,7 +35,8 @@ public class CandidatoService {
     }
 
     public void delete(Long id){
-
+        Candidato candidatoToBeDeleted = findByIdOrThrowBadRequestException(id);
+        candidatoRepository.delete(candidatoToBeDeleted);
     }
 
     public void listAll(){

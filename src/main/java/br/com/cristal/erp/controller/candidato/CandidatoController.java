@@ -73,12 +73,9 @@ public class CandidatoController {
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id){
 
-        Candidato candidatoToBeDeleted = candidatoRepository
-                .findById(id)
-                .orElseThrow(() -> new RuntimeException("Candidato Não Encontrado!")); // TODO CRIAR excecao customizada para o front end  - ControlAdviced
+        // TODO CRIAR excecao customizada para o front end  - ControlAdviced
 
-        candidatoRepository.delete(candidatoToBeDeleted);
-
+        candidatoService.delete(id);
         return ResponseEntity.noContent().build();
     }
 
