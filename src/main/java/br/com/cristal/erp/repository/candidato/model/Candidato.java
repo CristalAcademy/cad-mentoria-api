@@ -16,16 +16,16 @@ public class Candidato {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
-    public Integer idade; // TODO trocar para data de nascimento
+    public Integer dtNasc; // TODO trocar para data de nascimento
     public Boolean trabalha;
     public Boolean estuda;
     public Integer hrsDisponiveis; // TODO trocar para enum de horas  2 - 4 - 6 - 8
     public Boolean programou;
-    public String classeSocial; // TODO trocar para enum de classe social  6 faixas (risco , vuneravel, baixo , sustentavel , medio , alto)
+    public String classe; // TODO trocar para enum de classe social  6 faixas (risco , vuneravel, baixo , sustentavel , medio , alto)
 
     // TODO adicionar modo de texto para essa coluna @Column(columnDefinition="TEXT")
-    public String descricaoPqMereceQuer; // TODO mudar nome do campo para motivacao
-    public Date marcarEntrevista; // TODO trocar nome do campo por entrevista
-    public Integer periodoDisponivel; // TODO trocar para nome disponibilidade e tranformar em enum (Manha  - Tarde - Noite
+    public String motivacao; // TODO mudar nome do campo para motivacao
+    public Date entrevista; // TODO trocar nome do campo por entrevista
+    public Integer disponibilidade; // TODO trocar para nome disponibilidade e tranformar em enum (Manha  - Tarde - Noite
     // )
 }

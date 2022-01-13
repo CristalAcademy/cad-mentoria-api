@@ -25,36 +25,34 @@ public class CandidatoController {
 
     @PostMapping
     // TODO Criar classe CandidatoResponse para evitar devolver Entidade de negocios
-    public ResponseEntity<Candidato> create(@RequestBody CandidatoPostRequestBody request){
-
+    public ResponseEntity<CandidatoResponseBody> create(@RequestBody CandidatoPostRequestBody request){
         // TODO retirar regra de negocio do controler e adicionar ao service
-
-        Candidato candidato = candidatoMapper.mapearTabelaCandidato(request);
+        // TODO tirar esse espaço de linha
         // TODO tirar esse espaço de linha
 
-        candidato = candidatoRepository.save(candidato);
-        // TODO tirar esse espaço de linha
-        return ResponseEntity.status(201).body(candidato);
+        return ResponseEntity.status(201).body(candidatoService.save(request));
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Candidato> buscarId(@PathVariable Long id){
+    public ResponseEntity<CandidatoResponseBody> buscarId(@PathVariable Long id){
 
         // TODO retirar regra de negocio do controler
-        Candidato candidato = candidatoRepository
-                .findById(id)
-                .orElseThrow(() -> new RuntimeException("Candidato Não Encontrado")); // TODO CRIAR excecao customizada para o front end
+//        Candidato candidato = candidatoRepository
+//                .findById(id)
+//                .orElseThrow(() -> new RuntimeException("Candidato Não Encontrado")); // TODO CRIAR excecao customizada para o front end
 
-        return ResponseEntity.status(200).body(candidato);
+        return ResponseEntity.ok(candidatoService.findByIdOrThrowBadRequestExceptionReturnsCandidatoResponse(id));
     }
 
     @GetMapping
     public ResponseEntity<List<Candidato>> buscarTodos(){
 
         // TODO retirar regra de negocio do controler
-        List<Candidato> candidatoes = candidatoRepository
-                .findAll();
-        return ResponseEntity.status(200).body(candidatoes);
+//        List<Candidato> candidatoes = candidatoRepository
+//                .findAll();
+//        return ResponseEntity.status(200).body(candidatoes);
+//
+        return ResponseEntity.ok(candidatoService.listAll());
     }
 
     @PutMapping(value = "/{id}")

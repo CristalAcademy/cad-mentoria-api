@@ -12,44 +12,44 @@ public class CandidatoMapper {
     public Candidato mapearTabelaCandidato(CandidatoPostRequestBody candidatoPostRequestBody){
         Candidato mappedCandidato = new Candidato();
 
-        mappedCandidato.setIdade(candidatoPostRequestBody.getIdade());
+        mappedCandidato.setDtNasc(candidatoPostRequestBody.getIdade());
         mappedCandidato.setTrabalha(candidatoPostRequestBody.getTrabalha());
         mappedCandidato.setEstuda(candidatoPostRequestBody.getEstuda());
         mappedCandidato.setHrsDisponiveis(candidatoPostRequestBody.getHrsDisponiveis());
         mappedCandidato.setProgramou(candidatoPostRequestBody.getProgramou());
-        mappedCandidato.setClasseSocial(candidatoPostRequestBody.getClasseSocial());
-        mappedCandidato.setDescricaoPqMereceQuer(candidatoPostRequestBody.getDescricaoPqMereceQuer());
-        mappedCandidato.setMarcarEntrevista(candidatoPostRequestBody.getMarcarEntrevista());
-        mappedCandidato.setPeriodoDisponivel(candidatoPostRequestBody.getPeriodoDisponivel());
+        mappedCandidato.setClasse(candidatoPostRequestBody.getClasseSocial());
+        mappedCandidato.setMotivacao(candidatoPostRequestBody.getDescricaoPqMereceQuer());
+        mappedCandidato.setEntrevista(candidatoPostRequestBody.getMarcarEntrevista());
+        mappedCandidato.setDisponibilidade(candidatoPostRequestBody.getPeriodoDisponivel());
 
         return mappedCandidato;
     }
 
     public Candidato mapearTabelaCandidato(CandidatoPutRequestBody candidatoPutRequestBody, Candidato savedCandidato){
-        savedCandidato.setIdade(candidatoPutRequestBody.getIdade());
+        savedCandidato.setDtNasc(candidatoPutRequestBody.getIdade());
         savedCandidato.setTrabalha(candidatoPutRequestBody.getTrabalha());
         savedCandidato.setEstuda(candidatoPutRequestBody.getEstuda());
         savedCandidato.setHrsDisponiveis(candidatoPutRequestBody.getHrsDisponiveis());
         savedCandidato.setProgramou(candidatoPutRequestBody.getProgramou());
-        savedCandidato.setClasseSocial(candidatoPutRequestBody.getClasseSocial());
-        savedCandidato.setDescricaoPqMereceQuer(candidatoPutRequestBody.getDescricaoPqMereceQuer());
-        savedCandidato.setMarcarEntrevista(candidatoPutRequestBody.getMarcarEntrevista());
-        savedCandidato.setPeriodoDisponivel(candidatoPutRequestBody.getPeriodoDisponivel());
+        savedCandidato.setClasse(candidatoPutRequestBody.getClasseSocial());
+        savedCandidato.setMotivacao(candidatoPutRequestBody.getDescricaoPqMereceQuer());
+        savedCandidato.setEntrevista(candidatoPutRequestBody.getMarcarEntrevista());
+        savedCandidato.setDisponibilidade(candidatoPutRequestBody.getPeriodoDisponivel());
 
         return savedCandidato;
     }
 
     public CandidatoResponseBody mapearCandidatoResponse(Candidato candidato){
         CandidatoResponseBody responseBody = new CandidatoResponseBody();
-        responseBody.setIdade(candidato.getIdade());
+        responseBody.setIdade(candidato.getDtNasc());
         responseBody.setTrabalha(candidato.getTrabalha());
         responseBody.setEstuda(candidato.getEstuda());
         responseBody.setHrsDisponiveis(candidato.getHrsDisponiveis());
         responseBody.setProgramou(candidato.getProgramou());
-        responseBody.setClasseSocial(candidato.getClasseSocial());
-        responseBody.setDescricaoPqMereceQuer(candidato.getDescricaoPqMereceQuer());
-        responseBody.setMarcarEntrevista(candidato.getMarcarEntrevista());
-        responseBody.setPeriodoDisponivel(candidato.getPeriodoDisponivel());
+        responseBody.setClasseSocial(candidato.getClasse());
+        responseBody.setDescricaoPqMereceQuer(candidato.getMotivacao());
+        responseBody.setMarcarEntrevista(candidato.getEntrevista());
+        responseBody.setPeriodoDisponivel(candidato.getDisponibilidade());
         return responseBody;
     }
 }
