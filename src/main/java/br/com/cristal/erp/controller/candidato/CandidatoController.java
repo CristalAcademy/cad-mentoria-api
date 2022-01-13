@@ -1,10 +1,9 @@
 package br.com.cristal.erp.controller.candidato;
 
-import br.com.cristal.erp.controller.candidato.dto.CandidatoRequest;
+import br.com.cristal.erp.controller.candidato.dto.CandidatoPostRequestBody;
 import br.com.cristal.erp.repository.candidato.CandidatoRepository;
 import br.com.cristal.erp.repository.candidato.model.Candidato;
 import br.com.cristal.erp.service.candidato.mappers.CandidatoMapper;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +20,7 @@ public class CandidatoController {
 
     @PostMapping
     // TODO Criar classe CandidatoResponse para evitar devolver Entidade de negocios
-    public ResponseEntity<Candidato> create(@RequestBody CandidatoRequest request){
+    public ResponseEntity<Candidato> create(@RequestBody CandidatoPostRequestBody request){
 
         // TODO retirar regra de negocio do controler e adicionar ao service
 
@@ -55,7 +54,7 @@ public class CandidatoController {
 
     @PutMapping(value = "/{id}")
     // TODO Criar classe CandidatoResponse para evitar devolver Entidade de negocios
-    public ResponseEntity<Candidato> replace(@RequestBody CandidatoRequest candidatoRequest, @PathVariable Long id){
+    public ResponseEntity<Candidato> replace(@RequestBody CandidatoPostRequestBody candidatoPostRequestBody, @PathVariable Long id){
 
         // TODO retirar regra de negocio do controler e adicionar ao service
 
@@ -63,7 +62,7 @@ public class CandidatoController {
                 .findById(id)
                 .orElseThrow(() -> new RuntimeException("Candidato Não Encontrado!")); // TODO CRIAR excecao customizada para o front end
 
-        Candidato candidatoUpdated = candidatoMapper.mapearTabelaCandidato(candidatoRequest, savedCandidato);
+        Candidato candidatoUpdated = candidatoMapper.mapearTabelaCandidato(candidatoPostRequestBody, savedCandidato);
         candidatoRepository.save(candidatoUpdated);
 
         return ResponseEntity.status(200).body(candidatoUpdated);
