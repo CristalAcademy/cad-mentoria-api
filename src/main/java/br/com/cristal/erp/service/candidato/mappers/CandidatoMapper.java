@@ -41,6 +41,7 @@ public class CandidatoMapper {
 
     public CandidatoResponseBody mapearCandidatoResponse(Candidato candidato){
         CandidatoResponseBody responseBody = new CandidatoResponseBody();
+        responseBody.setId(candidato.getId());
         responseBody.setIdade(candidato.getIdade());
         responseBody.setTrabalha(candidato.getTrabalha());
         responseBody.setEstuda(candidato.getEstuda());
