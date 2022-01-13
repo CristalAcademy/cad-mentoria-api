@@ -1,13 +1,19 @@
 package br.com.cristal.erp.controller.candidato;
 
-import br.com.cristal.erp.controller.candidato.dto.CandidatoRequest;
-import br.com.cristal.erp.repository.candidato.CandidatoRepository;
-import br.com.cristal.erp.repository.candidato.model.Candidato;
-import br.com.cristal.erp.service.candidato.mappers.CandidatoMapper;
-import lombok.AllArgsConstructor;
+import br.com.cristal.erp.controller.candidato.dto.CandidatoPostRequestBody;
+import br.com.cristal.erp.controller.candidato.dto.CandidatoPutRequestBody;
+import br.com.cristal.erp.controller.candidato.dto.CandidatoResponseBody;
+import br.com.cristal.erp.service.candidato.CandidatoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -15,70 +21,31 @@ import java.util.List;
 @RequestMapping("/candidatos")
 @RequiredArgsConstructor
 public class CandidatoController {
-
-    private final CandidatoRepository candidatoRepository;
-    private final CandidatoMapper candidatoMapper;
+    private final CandidatoService candidatoService;
 
     @PostMapping
-    // TODO Criar classe CandidatoResponse para evitar devolver Entidade de negocios
-    public ResponseEntity<Candidato> create(@RequestBody CandidatoRequest request){
-
-        // TODO retirar regra de negocio do controler e adicionar ao service
-
-        Candidato candidato = candidatoMapper.mapearTabelaCandidato(request);
-        // TODO tirar esse espaço de linha
-
-        candidato = candidatoRepository.save(candidato);
-        // TODO tirar esse espaço de linha
-        return ResponseEntity.status(201).body(candidato);
+    public ResponseEntity<CandidatoResponseBody> create(@RequestBody CandidatoPostRequestBody request){
+        return ResponseEntity.status(201).body(candidatoService.save(request));
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Candidato> buscarId(@PathVariable Long id){
-
-        // TODO retirar regra de negocio do controler
-        Candidato candidato = candidatoRepository
-                .findById(id)
-                .orElseThrow(() -> new RuntimeException("Candidato Não Encontrado")); // TODO CRIAR excecao customizada para o front end
-
-        return ResponseEntity.status(200).body(candidato);
+    public ResponseEntity<CandidatoResponseBody> buscarId(@PathVariable Long id){
+        return ResponseEntity.ok(candidatoService.findByIdOrThrowBadRequestExceptionReturnsCandidatoResponse(id));
     }
 
     @GetMapping
-    public ResponseEntity<List<Candidato>> buscarTodos(){
-
-        // TODO retirar regra de negocio do controler
-        List<Candidato> candidatoes = candidatoRepository
-                .findAll();
-        return ResponseEntity.status(200).body(candidatoes);
+    public ResponseEntity<List<CandidatoResponseBody>> buscarTodos(){
+        return ResponseEntity.ok(candidatoService.listAll());
     }
 
-    @PutMapping(value = "/{id}")
-    // TODO Criar classe CandidatoResponse para evitar devolver Entidade de negocios
-    public ResponseEntity<Candidato> replace(@RequestBody CandidatoRequest candidatoRequest, @PathVariable Long id){
-
-        // TODO retirar regra de negocio do controler e adicionar ao service
-
-        Candidato savedCandidato = candidatoRepository
-                .findById(id)
-                .orElseThrow(() -> new RuntimeException("Candidato Não Encontrado!")); // TODO CRIAR excecao customizada para o front end
-
-        Candidato candidatoUpdated = candidatoMapper.mapearTabelaCandidato(candidatoRequest, savedCandidato);
-        candidatoRepository.save(candidatoUpdated);
-
-        return ResponseEntity.status(200).body(candidatoUpdated);
+    @PutMapping
+    public ResponseEntity<CandidatoResponseBody> replace(@RequestBody CandidatoPutRequestBody candidatoPutRequestBody){
+        return ResponseEntity.status(200).body(candidatoService.replace(candidatoPutRequestBody));
     }
 
     @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id){
-
-        Candidato candidatoToBeDeleted = candidatoRepository
-                .findById(id)
-                .orElseThrow(() -> new RuntimeException("Candidato Não Encontrado!")); // TODO CRIAR excecao customizada para o front end  - ControlAdviced
-
-        candidatoRepository.delete(candidatoToBeDeleted);
-
+        candidatoService.delete(id);
         return ResponseEntity.noContent().build();
     }
-
 }
