@@ -6,6 +6,7 @@ import br.com.cristal.erp.controller.candidato.dto.CandidatoResponseBody;
 import br.com.cristal.erp.exception.BadRequestsException;
 import br.com.cristal.erp.repository.candidato.CandidatoRepository;
 import br.com.cristal.erp.repository.candidato.model.Candidato;
+import br.com.cristal.erp.repository.candidato.model.enums.StatusCandidato;
 import br.com.cristal.erp.service.candidato.mappers.CandidatoMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -53,5 +54,13 @@ public class CandidatoService {
         candidatos.stream().forEach(candidato -> listaCandidatos.add(candidatoMapper.mapearCandidatoResponse(candidato)));
 
         return listaCandidatos;
+    }
+
+    public StatusCandidato statusCandidato(long id){
+        Candidato candidato = candidatoRepository
+                .findById(id)
+                .orElseThrow(() -> new RuntimeException("Candidato Não Encontrado"));
+
+        return candidato.getStatus();
     }
 }

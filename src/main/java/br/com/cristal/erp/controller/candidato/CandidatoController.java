@@ -4,6 +4,7 @@ import br.com.cristal.erp.controller.candidato.dto.CandidatoPostRequestBody;
 import br.com.cristal.erp.controller.candidato.dto.CandidatoPutRequestBody;
 import br.com.cristal.erp.controller.candidato.dto.CandidatoResponseBody;
 import br.com.cristal.erp.repository.candidato.model.Candidato;
+import br.com.cristal.erp.repository.candidato.model.enums.StatusCandidato;
 import br.com.cristal.erp.service.candidato.CandidatoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +31,11 @@ public class CandidatoController {
     @GetMapping
     public ResponseEntity<List<CandidatoResponseBody>> buscarTodos(){
         return ResponseEntity.ok(candidatoService.listAll());
+    }
+
+    @GetMapping(value = "/{id}/status")
+    public ResponseEntity<StatusCandidato> buscarStatus(@PathVariable Long id){
+        return ResponseEntity.ok(candidatoService.statusCandidato(id));
     }
 
     @PutMapping

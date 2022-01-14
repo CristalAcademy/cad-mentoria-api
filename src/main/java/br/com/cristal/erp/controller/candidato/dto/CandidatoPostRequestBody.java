@@ -1,5 +1,6 @@
 package br.com.cristal.erp.controller.candidato.dto;
 
+import br.com.cristal.erp.repository.candidato.model.enums.StatusCandidato;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -19,6 +20,7 @@ public class CandidatoPostRequestBody {
     public Boolean programou;
     public String classe;
     public String motivacao;
+    private StatusCandidato status;
     @JsonFormat(pattern = "yyyy-MM-dd")
     public LocalDate entrevista;
     @JsonFormat(pattern = "yyyy-MM-dd")
