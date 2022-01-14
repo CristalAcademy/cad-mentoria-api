@@ -61,7 +61,7 @@ public class CandidatoService {
     public StatusCandidato statusCandidato(long id){
         Candidato candidato = candidatoRepository
                 .findById(id)
-                .orElseThrow(() -> new RuntimeException("Candidato Não Encontrado"));
+                .orElseThrow(() -> new BadRequestsException("Candidato Não Encontrado"));
 
         return candidato.getStatus();
     }
