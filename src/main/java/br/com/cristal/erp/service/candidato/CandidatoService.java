@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -22,38 +23,39 @@ public class CandidatoService {
     private CandidatoMapper candidatoMapper;
 
     public CandidatoResponseBody replace(CandidatoPutRequestBody candidatoToBeUpdated) {
+
         Candidato savedCandidato = findByIdOrThrowBadRequestException(candidatoToBeUpdated.getId());
         Candidato candidatoToBeSaved = candidatoMapper.mapearTabelaCandidato(candidatoToBeUpdated, savedCandidato);
         return candidatoMapper.mapearCandidatoResponse(candidatoRepository.save(candidatoToBeSaved));
     }
 
-    public Candidato findByIdOrThrowBadRequestException(long id){
+    public Candidato findByIdOrThrowBadRequestException(long id) {
         return candidatoRepository.findById(id)
                 .orElseThrow(() -> new BadRequestsException("Cadidato não encontrado"));
     }
 
-    public CandidatoResponseBody findByIdOrThrowBadRequestExceptionReturnsCandidatoResponse(long id){
+    public CandidatoResponseBody findByIdOrThrowBadRequestExceptionReturnsCandidatoResponse(long id) {
         Candidato candidato = findByIdOrThrowBadRequestException(id);
         return candidatoMapper.mapearCandidatoResponse(candidato);
     }
 
-    public CandidatoResponseBody save(CandidatoPostRequestBody candidatoPost){
+    public CandidatoResponseBody save(CandidatoPostRequestBody candidatoPost) {
         Candidato candidato = candidatoMapper.mapearTabelaCandidato(candidatoPost);
         candidato = candidatoRepository.save(candidato);
         return candidatoMapper.mapearCandidatoResponse(candidato);
     }
 
-    public void delete(Long id){
+    public void delete(Long id) {
         Candidato candidatoToBeDeleted = findByIdOrThrowBadRequestException(id);
         candidatoRepository.delete(candidatoToBeDeleted);
     }
 
-    public List<CandidatoResponseBody> listAll(){
-        List<Candidato> candidatos = candidatoRepository.findAll();
-        List<CandidatoResponseBody> listaCandidatos = new ArrayList<>();
-        candidatos.stream().forEach(candidato -> listaCandidatos.add(candidatoMapper.mapearCandidatoResponse(candidato)));
-
-        return listaCandidatos;
+    public List<CandidatoResponseBody> listAll() {
+        return candidatoRepository
+                .findAll()
+                .stream()
+                .map(candidatoMapper::mapearCandidatoResponse)
+                .collect(Collectors.toList());
     }
 
     public StatusCandidato statusCandidato(long id){
