@@ -13,16 +13,16 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class CandidatoPostRequestBody {
     @JsonFormat(pattern = "yyyy-MM-dd")
-    public LocalDate dtNasc;
-    public Boolean trabalha;
-    public Boolean estuda;
-    public Integer hrsDisponiveis;
-    public Boolean programou;
-    public String classe;
-    public String motivacao;
+    private LocalDate dtNasc;
+    private Boolean trabalha;
+    private Boolean estuda;
+    private Integer hrsDisponiveis;
+    private Boolean programou;
+    private String classe;
+    private String motivacao;
     private StatusCandidato status;
     @JsonFormat(pattern = "yyyy-MM-dd")
-    public LocalDate entrevista;
+    private LocalDate entrevista;
     @JsonFormat(pattern = "yyyy-MM-dd")
-    public LocalDate disponibilidade;
+    private LocalDate disponibilidade;
 }
