@@ -3,11 +3,7 @@ package br.com.cristal.erp.controller.candidato;
 import br.com.cristal.erp.controller.candidato.dto.CandidatoPostRequestBody;
 import br.com.cristal.erp.controller.candidato.dto.CandidatoPutRequestBody;
 import br.com.cristal.erp.controller.candidato.dto.CandidatoResponseBody;
-<<<<<<< HEAD
-import br.com.cristal.erp.repository.candidato.model.Candidato;
 import br.com.cristal.erp.repository.candidato.model.enums.StatusCandidato;
-=======
->>>>>>> 636796ded737214e8129ae32fba7c9acc95f19b8
 import br.com.cristal.erp.service.candidato.CandidatoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
