@@ -8,10 +8,12 @@ import br.com.cristal.erp.repository.candidato.CandidatoRepository;
 import br.com.cristal.erp.repository.candidato.model.Candidato;
 import br.com.cristal.erp.service.candidato.mappers.CandidatoMapper;
 import lombok.AllArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -47,8 +49,11 @@ public class CandidatoService {
         candidatoRepository.delete(candidatoToBeDeleted);
     }
 
-    public List<Candidato> listAll(){
-        return candidatoRepository.findAll();
+    public List<CandidatoResponseBody> listAll(){
+        return candidatoRepository
+                .findAll()
+                .stream()
+                .map(candidatoMapper::mapearCandidatoResponse)
+                .collect(Collectors.toList());
     }
-
 }
