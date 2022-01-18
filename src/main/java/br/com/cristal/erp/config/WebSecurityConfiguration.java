@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -48,9 +49,28 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .httpBasic().and()
                 .authorizeRequests()
-                .antMatchers("/candidatos" , "/candidatos/**")
-                .hasAuthority("ADMIN")
-                .antMatchers(HttpMethod.POST,"/candidatos" , "/candidatos/**")
-                .hasAuthority("ADMIN").anyRequest().authenticated();
+                .antMatchers("/authenticate")
+                .permitAll()
+                .anyRequest()
+                .authenticated();
+
+//        http
+//                .csrf().disable()
+//                .httpBasic().and()
+//                .authorizeRequests()
+//                .antMatchers("/authenticate")
+//                .permitAll()
+//                .antMatchers("/candidatos" , "/candidatos/**")
+//                .hasAuthority("ADMIN")
+//                .antMatchers(HttpMethod.POST,"/candidatos" , "/candidatos/**")
+//                .hasAuthority("ADMIN")
+//                .anyRequest()
+//                .authenticated();
+    }
+
+    @Override
+    @Bean
+    protected AuthenticationManager authenticationManager() throws Exception {
+        return super.authenticationManager();
     }
 }
