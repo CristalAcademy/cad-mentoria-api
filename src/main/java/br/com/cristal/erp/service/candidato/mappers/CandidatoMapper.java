@@ -20,7 +20,7 @@ public class CandidatoMapper {
         mappedCandidato.setMotivacao(candidatoPostRequestBody.getMotivacao());
         mappedCandidato.setEntrevista(candidatoPostRequestBody.getEntrevista());
         mappedCandidato.setDisponibilidade(candidatoPostRequestBody.getDisponibilidade());
-
+        mappedCandidato.setStatus(candidatoPostRequestBody.getStatus());
         return mappedCandidato;
     }
 
@@ -34,6 +34,7 @@ public class CandidatoMapper {
         savedCandidato.setMotivacao(candidatoPutRequestBody.getMotivacao());
         savedCandidato.setEntrevista(candidatoPutRequestBody.getEntrevista());
         savedCandidato.setDisponibilidade(candidatoPutRequestBody.getDisponibilidade());
+        savedCandidato.setStatus(candidatoPutRequestBody.getStatus());
 
         return savedCandidato;
     }
@@ -50,6 +51,7 @@ public class CandidatoMapper {
         responseBody.setMotivacao(candidato.getMotivacao());
         responseBody.setEntrevista(candidato.getEntrevista());
         responseBody.setDisponibilidade(candidato.getDisponibilidade());
+        responseBody.setStatus(candidato.getStatus());
         return responseBody;
     }
 }

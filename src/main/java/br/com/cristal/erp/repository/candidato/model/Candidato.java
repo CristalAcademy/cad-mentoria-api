@@ -1,5 +1,6 @@
 package br.com.cristal.erp.repository.candidato.model;
 
+import br.com.cristal.erp.repository.candidato.model.enums.StatusCandidato;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,15 +16,18 @@ import java.time.LocalDate;
 public class Candidato {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long id;
-    public LocalDate dtNasc;
-    public Boolean trabalha;
-    public Boolean estuda;
-    public Integer hrsDisponiveis;
-    public Boolean programou;
-    public String classe;
+    private Long id;
+    private LocalDate dtNasc;
+    private Boolean trabalha;
+    private Boolean estuda;
+    private Integer hrsDisponiveis;
+    private Boolean programou;
+    private String classe;
+    @Enumerated
+    private StatusCandidato status;
     @Column(columnDefinition = "TEXT")
-    public String motivacao;
-    public LocalDate entrevista;
-    public LocalDate disponibilidade;
+    private String motivacao;
+    private LocalDate entrevista;
+    private LocalDate disponibilidade;
+
 }

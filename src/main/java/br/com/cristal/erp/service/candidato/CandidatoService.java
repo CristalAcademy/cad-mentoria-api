@@ -6,12 +6,12 @@ import br.com.cristal.erp.controller.candidato.dto.CandidatoResponseBody;
 import br.com.cristal.erp.exception.BadRequestsException;
 import br.com.cristal.erp.repository.candidato.CandidatoRepository;
 import br.com.cristal.erp.repository.candidato.model.Candidato;
+import br.com.cristal.erp.repository.candidato.model.enums.StatusCandidato;
 import br.com.cristal.erp.service.candidato.mappers.CandidatoMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -23,6 +23,7 @@ public class CandidatoService {
     private CandidatoMapper candidatoMapper;
 
     public CandidatoResponseBody replace(CandidatoPutRequestBody candidatoToBeUpdated) {
+
         Candidato savedCandidato = findByIdOrThrowBadRequestException(candidatoToBeUpdated.getId());
         Candidato candidatoToBeSaved = candidatoMapper.mapearTabelaCandidato(candidatoToBeUpdated, savedCandidato);
         return candidatoMapper.mapearCandidatoResponse(candidatoRepository.save(candidatoToBeSaved));
@@ -49,11 +50,19 @@ public class CandidatoService {
         candidatoRepository.delete(candidatoToBeDeleted);
     }
 
-    public List<CandidatoResponseBody> listAll(){
+    public List<CandidatoResponseBody> listAll() {
         return candidatoRepository
                 .findAll()
                 .stream()
                 .map(candidatoMapper::mapearCandidatoResponse)
                 .collect(Collectors.toList());
+    }
+
+    public StatusCandidato statusCandidato(long id){
+        Candidato candidato = candidatoRepository
+                .findById(id)
+                .orElseThrow(() -> new BadRequestsException("Candidato Não Encontrado"));
+
+        return candidato.getStatus();
     }
 }
