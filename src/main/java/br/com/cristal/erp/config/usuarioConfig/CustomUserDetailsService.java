@@ -26,4 +26,14 @@ public class CustomUserDetailsService implements UserDetailsService {
         }
         return new CustomUserDetails(usuario);
     }
+
+    public Usuario loadUserByUsernameAndReturnsUsuario(String nome) throws UsernameNotFoundException {
+
+        Usuario usuario = usuarioRepository.findByNomeusuario(nome);
+        if(usuario == null){
+            log.info("Usuário Ínvalido");
+            throw new UsernameNotFoundException("Usuário Ínvalido!");
+        }
+        return usuario;
+    }
 }
