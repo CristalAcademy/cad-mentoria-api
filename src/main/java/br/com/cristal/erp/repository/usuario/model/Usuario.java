@@ -21,5 +21,5 @@ public class Usuario {
     private Long id;
     private String nomeusuario;
     private String senha;
-    private String perfil;
+    private Perfil perfil;
 }

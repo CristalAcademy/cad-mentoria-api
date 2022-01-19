@@ -1,12 +1,12 @@
 package br.com.cristal.erp.config;
 
 import br.com.cristal.erp.repository.usuario.UsuarioRepository;
+import br.com.cristal.erp.repository.usuario.model.Perfil;
 import br.com.cristal.erp.repository.usuario.model.Usuario;
 import br.com.cristal.erp.util.filter.JwtFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -33,7 +33,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 Usuario.builder()
                         .nomeusuario("admin")
                         .senha("$2a$12$P2QHsp/rOG7i62ow23Z.5O4VjNp0C1JubkJjc6OpLC84SurH4UeWi")
-                        .perfil("ADMIN")
+                        .perfil(Perfil.ADMIN)
                         .build()
         );
     }
@@ -66,20 +66,6 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
-
-
-//        http
-//                .csrf().disable()
-//                .httpBasic().and()
-//                .authorizeRequests()
-//                .antMatchers("/authenticate")
-//                .permitAll()
-//                .antMatchers("/candidatos" , "/candidatos/**")
-//                .hasAuthority("ADMIN")
-//                .antMatchers(HttpMethod.POST,"/candidatos" , "/candidatos/**")
-//                .hasAuthority("ADMIN")
-//                .anyRequest()
-//                .authenticated();
     }
 
 
