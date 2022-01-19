@@ -28,23 +28,23 @@ public class CandidatoService {
         return candidatoMapper.mapearCandidatoResponse(candidatoRepository.save(candidatoToBeSaved));
     }
 
-    public Candidato findByIdOrThrowBadRequestException(long id) {
+    public Candidato findByIdOrThrowBadRequestException(long id){
         return candidatoRepository.findById(id)
                 .orElseThrow(() -> new BadRequestsException("Cadidato não encontrado"));
     }
 
-    public CandidatoResponseBody findByIdOrThrowBadRequestExceptionReturnsCandidatoResponse(long id) {
+    public CandidatoResponseBody findByIdOrThrowBadRequestExceptionReturnsCandidatoResponse(long id){
         Candidato candidato = findByIdOrThrowBadRequestException(id);
         return candidatoMapper.mapearCandidatoResponse(candidato);
     }
 
-    public CandidatoResponseBody save(CandidatoPostRequestBody candidatoPost) {
+    public CandidatoResponseBody save(CandidatoPostRequestBody candidatoPost){
         Candidato candidato = candidatoMapper.mapearTabelaCandidato(candidatoPost);
         candidato = candidatoRepository.save(candidato);
         return candidatoMapper.mapearCandidatoResponse(candidato);
     }
 
-    public void delete(Long id) {
+    public void delete(Long id){
         Candidato candidatoToBeDeleted = findByIdOrThrowBadRequestException(id);
         candidatoRepository.delete(candidatoToBeDeleted);
     }
