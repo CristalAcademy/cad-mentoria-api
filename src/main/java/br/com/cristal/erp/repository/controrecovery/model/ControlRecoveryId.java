@@ -12,7 +12,6 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ControlRecoveryId implements Serializable {
-
     private String email;
     private String hash;
 }

@@ -31,7 +31,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     void setAdminPerfil(){
         usuarioRepository.save(
                 Usuario.builder()
-                        .nomeusuario("admin")
+                        .nomecompleto("admin")
+                        .email("admin@admin.com")
                         .senha("$2a$12$P2QHsp/rOG7i62ow23Z.5O4VjNp0C1JubkJjc6OpLC84SurH4UeWi")
                         .perfil(Perfil.ADMIN)
                         .build()
@@ -67,6 +68,4 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
     }
-
-
 }

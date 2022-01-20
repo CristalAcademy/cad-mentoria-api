@@ -29,7 +29,7 @@ public class AuthenticateController {
     public JwtResponse authenticate(@RequestBody JwtRequest jwtRequest) throws Exception {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                            jwtRequest.getNomeusuario(),
+                            jwtRequest.getEmail(),
                             jwtRequest.getSenha()
                     )
             );
@@ -37,12 +37,12 @@ public class AuthenticateController {
             throw new Exception("INVALID_CREDENTIALS", e);
         }
 
-        final UserDetails userDetails = customUserDetailsService.loadUserByUsername(jwtRequest.getNomeusuario());
+        final UserDetails userDetails = customUserDetailsService.loadUserByUsername(jwtRequest.getEmail());
 
         final String token = jwtUtility.generateToken(userDetails);
 
         final String perfil = customUserDetailsService
-                .loadUserByUsernameAndReturnsUsuario(jwtRequest.getNomeusuario())
+                .loadUserByUsernameAndReturnsUsuario(jwtRequest.getEmail())
                 .getPerfil().toString();
 
         return new JwtResponse(
