@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class RecuperacaoSenhaController {
     private ControlRecoveryService controlRecoveryService;
 
-    @PostMapping
-    public ResponseEntity<Void> recSenha(@RequestBody String email){
-        return ResponseEntity.ok(controlRecoveryService)
-    }
+//    @PostMapping
+//    public ResponseEntity<Void> recSenha(@RequestBody String email){
+//        return ResponseEntity.ok(controlRecoveryService)
+//    }
  }
