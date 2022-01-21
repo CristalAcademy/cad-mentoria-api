@@ -19,13 +19,13 @@ public class RecuperacaoSenhaController {
     private ControlRecoveryService controlRecoveryService;
 
     @PostMapping
-    public ResponseEntity<Void> recSenha(@RequestBody EmailDto emailDto) throws Exception{
-        controlRecoveryService.recuperarSenha(emailDto.getEmail());
-        return  ResponseEntity.ok().body(null);
+    public ResponseEntity<Void> recSenha(@RequestBody EmailDto emailDto){
+//        controlRecoveryService.recuperarSenha(emailDto.getEmail());
+        return controlRecoveryService.recuperarSenha(emailDto.getEmail());
     }
 
     @PatchMapping("/confirmar")
-    public ResponseEntity<Void> confSenha(@RequestBody SenhaDto senhaDto) throws Exception{
+    public ResponseEntity<Void> confSenha(@RequestBody SenhaDto senhaDto){
         controlRecoveryService.confSenha(senhaDto);
         return ResponseEntity.ok().body(null);
     }

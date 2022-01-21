@@ -1,10 +1,12 @@
 package br.com.cristal.erp.util.filter;
 
 import br.com.cristal.erp.config.usuarioConfig.CustomUserDetailsService;
+import br.com.cristal.erp.exception.AcessDeniedException;
 import br.com.cristal.erp.util.JWTUtility;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
-import org.apache.catalina.filters.ExpiresFilter;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -32,19 +34,20 @@ public class JwtFilter extends OncePerRequestFilter {
         String token = null;
         String username = null;
 
-        if(null != authorization && authorization.startsWith("Bearer ")){
+
+        if (null != authorization && authorization.startsWith("Bearer ")) {
             token = authorization.substring(7);
             username = jwtUtility.getUsernameFromToken(token);
         }
 
-        if(null != username && SecurityContextHolder.getContext().getAuthentication() == null){
+        if (null != username && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails
                     = customUserDetailsService.loadUserByUsername(username);
 
-            if(jwtUtility.validateToken(token, userDetails)){
+            if (jwtUtility.validateToken(token, userDetails)) {
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken
                         = new UsernamePasswordAuthenticationToken(
-                                userDetails, null, userDetails.getAuthorities());
+                        userDetails, null, userDetails.getAuthorities());
 
                 usernamePasswordAuthenticationToken.setDetails(
                         new WebAuthenticationDetailsSource().buildDetails(request)
@@ -52,7 +55,6 @@ public class JwtFilter extends OncePerRequestFilter {
 
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
             }
-
         }
         filterChain.doFilter(request, response);
     }

@@ -7,6 +7,7 @@ import br.com.cristal.erp.util.filter.JwtFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
@@ -29,14 +30,21 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     @Bean
     void setAdminPerfil(){
-        usuarioRepository.save(
-                Usuario.builder()
-                        .nomecompleto("admin")
-                        .email("admin@admin.com")
-                        .senha("$2a$12$P2QHsp/rOG7i62ow23Z.5O4VjNp0C1JubkJjc6OpLC84SurH4UeWi")
-                        .perfil(Perfil.ADMIN)
-                        .build()
-        );
+
+        Usuario usuario = usuarioRepository.findByEmail("admin@admin.com");
+
+        if (usuario == null ) {
+            usuarioRepository.save(
+                    Usuario.builder()
+                            .nomecompleto("admin")
+                            .email("alanisemanuela950@gmail.com")
+                            .senha("$2a$12$P2QHsp/rOG7i62ow23Z.5O4VjNp0C1JubkJjc6OpLC84SurH4UeWi")
+                            .perfil(Perfil.ADMIN)
+                            .build()
+            );
+
+        }
+
     }
 
     @Bean
@@ -59,7 +67,11 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/authenticate")
+                .antMatchers("/authenticate", "**/authenticate")
+                .permitAll()
+                .antMatchers(HttpMethod.POST, "/recuperar-senha")
+                .permitAll()
+                .antMatchers(HttpMethod.PATCH,"/recuperar-senha/confirmar")
                 .permitAll()
                 .anyRequest()
                 .authenticated()

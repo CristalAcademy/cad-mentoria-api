@@ -20,6 +20,7 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String nomecompleto;
+    @Column(unique = true)
     private String email;
     private String senha;
     private Perfil perfil;

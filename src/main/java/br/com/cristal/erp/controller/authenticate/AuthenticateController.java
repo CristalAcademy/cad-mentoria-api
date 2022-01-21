@@ -3,6 +3,7 @@ package br.com.cristal.erp.controller.authenticate;
 import br.com.cristal.erp.config.model.JwtRequest;
 import br.com.cristal.erp.config.model.JwtResponse;
 import br.com.cristal.erp.config.usuarioConfig.CustomUserDetailsService;
+import br.com.cristal.erp.exception.AcessDeniedException;
 import br.com.cristal.erp.util.JWTUtility;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -26,7 +27,7 @@ public class AuthenticateController {
     private CustomUserDetailsService customUserDetailsService;
 
     @PostMapping("/authenticate")
-    public JwtResponse authenticate(@RequestBody JwtRequest jwtRequest) throws Exception {
+    public JwtResponse authenticate(@RequestBody JwtRequest jwtRequest){
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
                             jwtRequest.getEmail(),
@@ -34,7 +35,7 @@ public class AuthenticateController {
                     )
             );
         } catch (BadCredentialsException e) {
-            throw new Exception("INVALID_CREDENTIALS", e);
+            throw new AcessDeniedException("Falha na autenticação");
         }
 
         final UserDetails userDetails = customUserDetailsService.loadUserByUsername(jwtRequest.getEmail());
