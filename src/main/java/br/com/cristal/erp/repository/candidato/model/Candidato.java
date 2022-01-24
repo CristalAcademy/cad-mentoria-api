@@ -29,5 +29,4 @@ public class Candidato {
     private String motivacao;
     private LocalDate entrevista;
     private LocalDate disponibilidade;
-
 }

@@ -11,7 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 public class JwtResponse {
 
-    private String nomeUsuario;
+    private String email;
     private String token;
     private String perfil;
     private List permissoes;
