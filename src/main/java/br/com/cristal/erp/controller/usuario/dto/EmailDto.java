@@ -1,4 +1,4 @@
-package br.com.cristal.erp.controller.candidato.dto;
+package br.com.cristal.erp.controller.usuario.dto;
 
 import lombok.Data;
 

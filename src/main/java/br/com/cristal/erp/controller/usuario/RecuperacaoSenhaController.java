@@ -1,7 +1,7 @@
-package br.com.cristal.erp.controller.candidato;
+package br.com.cristal.erp.controller.usuario;
 
-import br.com.cristal.erp.controller.candidato.dto.EmailDto;
-import br.com.cristal.erp.controller.candidato.dto.SenhaDto;
+import br.com.cristal.erp.controller.usuario.dto.EmailDto;
+import br.com.cristal.erp.controller.usuario.dto.SenhaDto;
 import br.com.cristal.erp.service.candidato.ControlRecoveryService;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
