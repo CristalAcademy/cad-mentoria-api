@@ -4,10 +4,10 @@ import br.com.cristal.erp.controller.candidato.dto.CandidatoPostRequestBody;
 import br.com.cristal.erp.controller.candidato.dto.CandidatoPutRequestBody;
 import br.com.cristal.erp.controller.candidato.dto.CandidatoResponseBody;
 import br.com.cristal.erp.exception.BadRequestsException;
+import br.com.cristal.erp.mapper.CandidatoMapper;
 import br.com.cristal.erp.repository.candidato.CandidatoRepository;
 import br.com.cristal.erp.repository.candidato.model.Candidato;
 import br.com.cristal.erp.repository.candidato.model.enums.StatusCandidato;
-import br.com.cristal.erp.service.candidato.mappers.CandidatoMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,9 +23,11 @@ public class CandidatoService {
 
     public CandidatoResponseBody replace(CandidatoPutRequestBody candidatoToBeUpdated) {
 
-        Candidato savedCandidato = findByIdOrThrowBadRequestException(candidatoToBeUpdated.getId());
-        Candidato candidatoToBeSaved = candidatoMapper.mapearTabelaCandidato(candidatoToBeUpdated, savedCandidato);
-        return candidatoMapper.mapearCandidatoResponse(candidatoRepository.save(candidatoToBeSaved));
+        Candidato candidatoFound = findByIdOrThrowBadRequestException(candidatoToBeUpdated.getId());
+        Candidato candidatoToBeSaved = CandidatoMapper.INSTANCE.toCandidato(candidatoToBeUpdated);
+        candidatoToBeSaved.setId(candidatoFound.getId());
+        Candidato savedCandidato = candidatoRepository.save(candidatoToBeSaved);
+        return CandidatoMapper.INSTANCE.toResponseBody(savedCandidato);
     }
 
     public Candidato findByIdOrThrowBadRequestException(long id){
@@ -35,13 +37,13 @@ public class CandidatoService {
 
     public CandidatoResponseBody findByIdOrThrowBadRequestExceptionReturnsCandidatoResponse(long id){
         Candidato candidato = findByIdOrThrowBadRequestException(id);
-        return candidatoMapper.mapearCandidatoResponse(candidato);
+        return CandidatoMapper.INSTANCE.toResponseBody(candidato);
     }
 
     public CandidatoResponseBody save(CandidatoPostRequestBody candidatoPost){
-        Candidato candidato = candidatoMapper.mapearTabelaCandidato(candidatoPost);
+        Candidato candidato = CandidatoMapper.INSTANCE.toCandidato(candidatoPost);
         candidato = candidatoRepository.save(candidato);
-        return candidatoMapper.mapearCandidatoResponse(candidato);
+        return CandidatoMapper.INSTANCE.toResponseBody(candidato);
     }
 
     public void delete(Long id){
@@ -53,7 +55,7 @@ public class CandidatoService {
         return candidatoRepository
                 .findAll()
                 .stream()
-                .map(candidatoMapper::mapearCandidatoResponse)
+                .map(candidatoMapper::toResponseBody)
                 .collect(Collectors.toList());
     }
 
