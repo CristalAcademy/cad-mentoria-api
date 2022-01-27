@@ -1,12 +1,8 @@
 package br.com.cristal.erp.util.filter;
 
 import br.com.cristal.erp.config.usuarioConfig.CustomUserDetailsService;
-import br.com.cristal.erp.exception.AcessDeniedException;
 import br.com.cristal.erp.util.JWTUtility;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -37,7 +33,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
         if (null != authorization && authorization.startsWith("Bearer ")) {
             token = authorization.substring(7);
-            username = jwtUtility.getUsernameFromToken(token);
+            username = jwtUtility.getEmailFromToken(token);
         }
 
         if (null != username && SecurityContextHolder.getContext().getAuthentication() == null) {
