@@ -38,12 +38,12 @@ public class AuthenticateController {
             throw new AcessDeniedException("Falha na autenticação");
         }
 
-        final UserDetails userDetails = customUserDetailsService.loadUserByUsername(jwtRequest.getEmail());
+        final UserDetails userDetails = customUserDetailsService.loadUserByEmail(jwtRequest.getEmail());
 
         final String token = jwtUtility.generateToken(userDetails);
 
         final String perfil = customUserDetailsService
-                .loadUserByUsernameAndReturnsUsuario(jwtRequest.getEmail())
+                .loadUserByEmailAndReturnsUsuario(jwtRequest.getEmail())
                 .getPerfil().toString();
 
         return new JwtResponse(

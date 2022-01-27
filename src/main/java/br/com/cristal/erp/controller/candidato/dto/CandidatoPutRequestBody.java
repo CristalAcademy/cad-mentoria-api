@@ -12,7 +12,6 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CandidatoPutRequestBody {
-    private Long id;
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate dtNasc;
     private Boolean trabalha;

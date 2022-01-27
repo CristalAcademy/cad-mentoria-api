@@ -15,7 +15,6 @@ import java.time.LocalDate;
 @Table(name = "candidato")
 public class Candidato {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private LocalDate dtNasc;
     private Boolean trabalha;

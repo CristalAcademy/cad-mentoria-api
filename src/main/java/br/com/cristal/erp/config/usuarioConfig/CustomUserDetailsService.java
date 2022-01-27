@@ -27,7 +27,17 @@ public class CustomUserDetailsService implements UserDetailsService {
         return new CustomUserDetails(usuario);
     }
 
-    public Usuario loadUserByUsernameAndReturnsUsuario(String email) throws UsernameNotFoundException {
+    public UserDetails loadUserByEmail(String email) throws UsernameNotFoundException {
+
+        Usuario usuario = usuarioRepository.findByEmail(email);
+        if(usuario == null){
+            log.info("Usuário Ínvalido");
+            throw new UsernameNotFoundException("Usuário Ínvalido!");
+        }
+        return new CustomUserDetails(usuario);
+    }
+
+    public Usuario loadUserByEmailAndReturnsUsuario(String email) throws UsernameNotFoundException {
 
         Usuario usuario = usuarioRepository.findByEmail(email);
         if(usuario == null){
