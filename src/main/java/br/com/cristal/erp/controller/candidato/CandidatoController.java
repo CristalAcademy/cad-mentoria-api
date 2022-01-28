@@ -3,12 +3,10 @@ package br.com.cristal.erp.controller.candidato;
 import br.com.cristal.erp.controller.candidato.dto.CandidatoPostRequestBody;
 import br.com.cristal.erp.controller.candidato.dto.CandidatoPutRequestBody;
 import br.com.cristal.erp.controller.candidato.dto.CandidatoResponseBody;
-import br.com.cristal.erp.repository.candidato.CandidatoRepository;
-import br.com.cristal.erp.repository.candidato.model.Candidato;
+import br.com.cristal.erp.repository.candidato.model.enums.StatusCandidato;
 import br.com.cristal.erp.service.candidato.CandidatoService;
-import br.com.cristal.erp.service.candidato.mappers.CandidatoMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,69 +15,47 @@ import java.util.List;
 @RestController
 @RequestMapping("/candidatos")
 @RequiredArgsConstructor
+@Log4j2
 public class CandidatoController {
-
-    private final CandidatoRepository candidatoRepository;
     private final CandidatoService candidatoService;
-    private final CandidatoMapper candidatoMapper;
 
     @PostMapping
-    // TODO Criar classe CandidatoResponse para evitar devolver Entidade de negocios
-    public ResponseEntity<Candidato> create(@RequestBody CandidatoPostRequestBody request){
-
-        // TODO retirar regra de negocio do controler e adicionar ao service
-
-        Candidato candidato = candidatoMapper.mapearTabelaCandidato(request);
-        // TODO tirar esse espaço de linha
-
-        candidato = candidatoRepository.save(candidato);
-        // TODO tirar esse espaço de linha
-        return ResponseEntity.status(201).body(candidato);
+    public ResponseEntity<CandidatoResponseBody> create(
+            @RequestHeader(value="Authorization") String headerToken,
+            @RequestBody CandidatoPostRequestBody request
+    ){
+        return ResponseEntity.status(201).body(candidatoService.save(headerToken, request));
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<Candidato> buscarId(@PathVariable Long id){
-
-        // TODO retirar regra de negocio do controler
-        Candidato candidato = candidatoRepository
-                .findById(id)
-                .orElseThrow(() -> new RuntimeException("Candidato Não Encontrado")); // TODO CRIAR excecao customizada para o front end
-
-        return ResponseEntity.status(200).body(candidato);
+    public ResponseEntity<CandidatoResponseBody> buscarId(@PathVariable Long id){
+        return ResponseEntity.ok(candidatoService.findByIdOrThrowBadRequestExceptionReturnsCandidatoResponse(id));
     }
 
     @GetMapping
-    public ResponseEntity<List<Candidato>> buscarTodos(){
-
-        // TODO retirar regra de negocio do controler
-        List<Candidato> candidatoes = candidatoRepository
-                .findAll();
-        return ResponseEntity.status(200).body(candidatoes);
+    public ResponseEntity<List<CandidatoResponseBody>> buscarTodos(){
+        return ResponseEntity.ok(candidatoService.listAll());
     }
 
-    @PutMapping(value = "/{id}")
-    // TODO Criar classe CandidatoResponse para evitar devolver Entidade de negocios
-    public ResponseEntity<CandidatoResponseBody> replace(@RequestBody CandidatoPutRequestBody candidatoPutRequestBody, @PathVariable Long id){
-
-        // TODO retirar regra de negocio do controler e adicionar ao service
-
-//        candidatoService.replace(candidatoPutRequestBody);
-
-        // TODO CRIAR excecao customizada para o front end
-
-        return ResponseEntity.status(200).body(candidatoService.replace(candidatoPutRequestBody));
+    @GetMapping(value = "/{id}/status")
+    public ResponseEntity<StatusCandidato> buscarStatus(@PathVariable Long id){
+        return ResponseEntity.ok(candidatoService.statusCandidato(id));
     }
 
-    @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id){
+    @PutMapping
+    public ResponseEntity<CandidatoResponseBody> replace(
+            @RequestHeader(value="Authorization") String headerToken,
+            @RequestBody CandidatoPutRequestBody candidatoPutRequestBody
+    ){
+        return ResponseEntity.status(200).body(candidatoService.replace(headerToken, candidatoPutRequestBody));
+    }
 
-        Candidato candidatoToBeDeleted = candidatoRepository
-                .findById(id)
-                .orElseThrow(() -> new RuntimeException("Candidato Não Encontrado!")); // TODO CRIAR excecao customizada para o front end  - ControlAdviced
-
-        candidatoRepository.delete(candidatoToBeDeleted);
-
+    @DeleteMapping( value = "/{id}")
+    public ResponseEntity<Void> delete(
+            @RequestHeader(value="Authorization") String headerToken,
+            @PathVariable Long id
+    ) {
+        candidatoService.delete(headerToken, id);
         return ResponseEntity.noContent().build();
     }
-
 }

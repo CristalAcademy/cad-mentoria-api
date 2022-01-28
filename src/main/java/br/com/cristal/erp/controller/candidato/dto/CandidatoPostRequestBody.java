@@ -1,22 +1,28 @@
 package br.com.cristal.erp.controller.candidato.dto;
 
+import br.com.cristal.erp.repository.candidato.model.enums.StatusCandidato;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class CandidatoPostRequestBody {
-    public Integer idade;
-    public Boolean trabalha;
-    public Boolean estuda;
-    public Integer hrsDisponiveis;
-    public Boolean programou;
-    public String classeSocial;
-    public String descricaoPqMereceQuer;
-    public Date marcarEntrevista;
-    public Integer periodoDisponivel;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate dtNasc;
+    private Boolean trabalha;
+    private Boolean estuda;
+    private Integer hrsDisponiveis;
+    private Boolean programou;
+    private String classe;
+    private String motivacao;
+    private StatusCandidato status;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate entrevista;
+    @JsonFormat(pattern = "yyyy-MM-dd")
+    private LocalDate disponibilidade;
 }
