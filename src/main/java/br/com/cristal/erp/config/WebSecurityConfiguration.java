@@ -48,7 +48,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/authenticate", "**/authenticate")
+                .antMatchers("/authenticate", "**/authenticate", "**authenticate**")
                 .permitAll()
                 .antMatchers(HttpMethod.POST, "/recuperar-senha")
                 .permitAll()
