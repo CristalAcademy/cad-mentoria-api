@@ -1,27 +1,34 @@
 package br.com.cristal.erp.service.candidato.mappers;
 
-import br.com.cristal.erp.controller.candidato.dto.CandidatoPostRequestBody;
-import br.com.cristal.erp.controller.candidato.dto.CandidatoPutRequestBody;
-import br.com.cristal.erp.controller.candidato.dto.CandidatoResponseBody;
+import br.com.cristal.erp.controller.candidato.dto.*;
 import br.com.cristal.erp.repository.candidato.model.Candidato;
+import br.com.cristal.erp.repository.usuario.model.Perfil;
+import br.com.cristal.erp.repository.usuario.model.Usuario;
 import org.springframework.stereotype.Service;
 
 @Service
 public class CandidatoMapper {
-    public Candidato mapearTabelaCandidato(CandidatoPostRequestBody candidatoPostRequestBody){
+    public Candidato mapearTabelaCandidato(CandidatoRequestSocial candidatoRequestSocial){
         Candidato mappedCandidato = new Candidato();
 
-        mappedCandidato.setDtNasc(candidatoPostRequestBody.getDtNasc());
-        mappedCandidato.setTrabalha(candidatoPostRequestBody.getTrabalha());
-        mappedCandidato.setEstuda(candidatoPostRequestBody.getEstuda());
-        mappedCandidato.setHrsDisponiveis(candidatoPostRequestBody.getHrsDisponiveis());
-        mappedCandidato.setProgramou(candidatoPostRequestBody.getProgramou());
-        mappedCandidato.setClasse(candidatoPostRequestBody.getClasse());
-        mappedCandidato.setMotivacao(candidatoPostRequestBody.getMotivacao());
-        mappedCandidato.setEntrevista(candidatoPostRequestBody.getEntrevista());
-        mappedCandidato.setDisponibilidade(candidatoPostRequestBody.getDisponibilidade());
-        mappedCandidato.setStatus(candidatoPostRequestBody.getStatus());
+        mappedCandidato.setClasse(candidatoRequestSocial.getClasse());
+        mappedCandidato.setMotivacao(candidatoRequestSocial.getMotivacao());
+        mappedCandidato.setEntrevista(candidatoRequestSocial.getEntrevista());
+        mappedCandidato.setStatus(candidatoRequestSocial.getStatus());
         return mappedCandidato;
+    }
+
+    public Candidato mapearCompCandidato(CandidatoRequestComplemento candidatoRequestComplemento){
+        Candidato mappedCompCandidato = new Candidato();
+
+        mappedCompCandidato.setDtNasc(candidatoRequestComplemento.getDtNasc());
+        mappedCompCandidato.setTrabalha(candidatoRequestComplemento.getTrabalha());
+        mappedCompCandidato.setEstuda(candidatoRequestComplemento.getEstuda());
+        mappedCompCandidato.setHrsDisponiveis(candidatoRequestComplemento.getHrsDisponiveis());
+        mappedCompCandidato.setDisponibilidade(candidatoRequestComplemento.getDisponibilidade());
+        mappedCompCandidato.setProgramou(candidatoRequestComplemento.getProgramou());
+
+        return mappedCompCandidato;
     }
 
     public Candidato mapearTabelaCandidato(CandidatoPutRequestBody candidatoPutRequestBody, Candidato savedCandidato){
@@ -41,6 +48,13 @@ public class CandidatoMapper {
 
     public CandidatoResponseBody mapearCandidatoResponse(Candidato candidato){
         CandidatoResponseBody responseBody = new CandidatoResponseBody();
+        Usuario usuarioResp = new Usuario();
+
+        usuarioResp.setNomecompleto(candidato.getNome());
+        usuarioResp.setEmail(candidato.getEmail());
+        usuarioResp.setSenha(candidato.getSenha());
+
+
         responseBody.setId(candidato.getId());
         responseBody.setDtNasc(candidato.getDtNasc());
         responseBody.setTrabalha(candidato.getTrabalha());
@@ -54,4 +68,28 @@ public class CandidatoMapper {
         responseBody.setStatus(candidato.getStatus());
         return responseBody;
     }
+
+
+    public Usuario mapearTabelaUser(CandidatoRequestUser candidatoRequestUser) {
+        Usuario mappedUsuario = new Usuario();
+
+        mappedUsuario.setNomecompleto(candidatoRequestUser.getNome());
+        mappedUsuario.setEmail(candidatoRequestUser.getEmail());
+        mappedUsuario.setSenha(candidatoRequestUser.getSenha());
+        mappedUsuario.setPerfil(Perfil.CANDIDATO);
+
+        return mappedUsuario;
+    }
+
+    public CandidatoResponseBody responseUser(Usuario usuario){
+        CandidatoResponseBody respUser = new CandidatoResponseBody();
+
+        respUser.setName(usuario.getNomecompleto());
+        respUser.setEmail(usuario.getEmail());
+        respUser.setSenha(usuario.getSenha());
+        respUser.setPerfil(usuario.getPerfil());
+
+        return respUser;
+    }
+
 }
