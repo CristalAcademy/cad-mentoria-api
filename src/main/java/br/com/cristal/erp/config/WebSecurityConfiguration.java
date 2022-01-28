@@ -31,7 +31,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     @Bean
     void setAdminPerfil(){
 
-        Usuario usuario = usuarioRepository.findByEmail("admin@admin.com");
+        Usuario usuario = usuarioRepository.findByEmail("alanisemanuela950@gmail.com");
 
         if (usuario == null ) {
             usuarioRepository.save(
@@ -67,7 +67,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/authenticate", "**/authenticate")
+                .antMatchers("/authenticate", "**/authenticate", "**authenticate**")
                 .permitAll()
                 .antMatchers(HttpMethod.POST, "/recuperar-senha")
                 .permitAll()
