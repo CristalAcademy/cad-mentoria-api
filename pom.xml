@@ -59,6 +59,10 @@
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-jpamodelgen</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 			<optional>true</optional>
@@ -124,13 +128,6 @@
 				<configuration>
 					<source>1.8</source>
 					<target>1.8</target>
-					<!-- See https://maven.apache.org/plugins/maven-compiler-plugin/compile-mojo.html -->
-					<!-- Classpath elements to supply as annotation processor path. If specified, the compiler   -->
-					<!-- will detect annotation processors only in those classpath elements. If omitted, the     -->
-					<!-- default classpath is used to detect annotation processors. The detection itself depends -->
-					<!-- on the configuration of annotationProcessors.                                           -->
-					<!--                                                                                         -->
-					<!-- According to this documentation, the provided dependency processor is not considered!   -->
 					<annotationProcessorPaths>
 						<path>
 							<groupId>org.mapstruct</groupId>

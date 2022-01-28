@@ -8,22 +8,22 @@ import br.com.cristal.erp.exception.AcessDeniedException;
 import br.com.cristal.erp.exception.BadRequestsException;
 import br.com.cristal.erp.mapper.CandidatoMapper;
 import br.com.cristal.erp.repository.candidato.CandidatoRepository;
+import br.com.cristal.erp.repository.candidato.filter.CandidatoFiltro;
 import br.com.cristal.erp.repository.candidato.model.Candidato;
 import br.com.cristal.erp.repository.candidato.model.enums.StatusCandidato;
+import br.com.cristal.erp.repository.candidato.specifications.CandidatoSpecifications;
 import br.com.cristal.erp.repository.usuario.model.Usuario;
 import br.com.cristal.erp.util.JWTUtility;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
 public class CandidatoService {
 
     private CandidatoRepository candidatoRepository;
-    private CandidatoMapper candidatoMapper;
     private JWTUtility jwtUtility;
     private CustomUserDetailsService customUserDetailsService;
 
@@ -90,19 +90,15 @@ public class CandidatoService {
         candidatoRepository.delete(candidatoToBeDeleted);
     }
 
-    public List<CandidatoResponseBody> listAll() {
-        return candidatoRepository
-                .findAll()
-                .stream()
-                .map(candidatoMapper::toResponseBody)
-                .collect(Collectors.toList());
-    }
-
     public StatusCandidato statusCandidato(long id){
         Candidato candidato = candidatoRepository
                 .findById(id)
                 .orElseThrow(() -> new BadRequestsException("Candidato Não Encontrado"));
 
         return candidato.getStatus();
+    }
+
+    public List<Candidato> buscaComFiltro(CandidatoFiltro filtro){
+        return candidatoRepository.findAll(new CandidatoSpecifications(filtro));
     }
 }
