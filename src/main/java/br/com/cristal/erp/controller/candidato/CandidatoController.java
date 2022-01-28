@@ -3,6 +3,8 @@ package br.com.cristal.erp.controller.candidato;
 import br.com.cristal.erp.controller.candidato.dto.CandidatoPostRequestBody;
 import br.com.cristal.erp.controller.candidato.dto.CandidatoPutRequestBody;
 import br.com.cristal.erp.controller.candidato.dto.CandidatoResponseBody;
+import br.com.cristal.erp.repository.candidato.filter.CandidatoFiltro;
+import br.com.cristal.erp.repository.candidato.model.Candidato;
 import br.com.cristal.erp.repository.candidato.model.enums.StatusCandidato;
 import br.com.cristal.erp.service.candidato.CandidatoService;
 import lombok.RequiredArgsConstructor;
@@ -33,8 +35,8 @@ public class CandidatoController {
     }
 
     @GetMapping
-    public ResponseEntity<List<CandidatoResponseBody>> buscarTodos(){
-        return ResponseEntity.ok(candidatoService.listAll());
+    public ResponseEntity<List<CandidatoResponseBody>> buscarComFiltro(CandidatoFiltro filtro){
+        return ResponseEntity.ok().body(candidatoService.buscaComFiltro(filtro));
     }
 
     @GetMapping(value = "/{id}/status")

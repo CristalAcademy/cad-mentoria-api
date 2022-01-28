@@ -29,25 +29,6 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     private final JwtFilter jwtFilter;
 
     @Bean
-    void setAdminPerfil(){
-
-        Usuario usuario = usuarioRepository.findByEmail("alanisemanuela950@gmail.com");
-
-        if (usuario == null ) {
-            usuarioRepository.save(
-                    Usuario.builder()
-                            .nomecompleto("Alanis Emanuela Pinheiro de Oliveira")
-                            .email("alanisemanuela950@gmail.com")
-                            .senha("$2a$12$P2QHsp/rOG7i62ow23Z.5O4VjNp0C1JubkJjc6OpLC84SurH4UeWi")
-                            .perfil(Perfil.ADMIN)
-                            .build()
-            );
-
-        }
-
-    }
-
-    @Bean
     AuthenticationProvider authenticationProvider(){
         DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
         provider.setUserDetailsService(userDetailsService);
