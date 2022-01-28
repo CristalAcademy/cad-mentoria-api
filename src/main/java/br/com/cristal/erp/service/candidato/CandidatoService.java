@@ -103,7 +103,7 @@ public class CandidatoService {
         return candidatoRepository
                 .findAll(new CandidatoSpecifications(filtro))
                 .stream()
-                .map(candidato -> CandidatoMapper.INSTANCE.toResponseBody(candidato))
+                .map(CandidatoMapper.INSTANCE::toResponseBody)
                 .collect(Collectors.toList());
     }
 }
