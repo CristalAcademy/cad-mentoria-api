@@ -18,6 +18,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -98,7 +99,11 @@ public class CandidatoService {
         return candidato.getStatus();
     }
 
-    public List<Candidato> buscaComFiltro(CandidatoFiltro filtro){
-        return candidatoRepository.findAll(new CandidatoSpecifications(filtro));
+    public List<CandidatoResponseBody> buscaComFiltro(CandidatoFiltro filtro){
+        return candidatoRepository
+                .findAll(new CandidatoSpecifications(filtro))
+                .stream()
+                .map(candidato -> CandidatoMapper.INSTANCE.toResponseBody(candidato))
+                .collect(Collectors.toList());
     }
 }

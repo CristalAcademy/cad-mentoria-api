@@ -35,7 +35,7 @@ public class CandidatoController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Candidato>> buscarComFiltro(CandidatoFiltro filtro){
+    public ResponseEntity<List<CandidatoResponseBody>> buscarComFiltro(CandidatoFiltro filtro){
         return ResponseEntity.ok().body(candidatoService.buscaComFiltro(filtro));
     }
 
