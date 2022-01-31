@@ -34,7 +34,7 @@ public class SwaggerDocumentation {
     @Value("${refpath.swagger.apiinfo.description}")
     private String description;
 
-    @Value("${refpath.swagger.apiinfo.termsOfService}")
+    @Value("${refpath.swagger.apiinfo.termsOfServiceUrl}")
     private String termsOfService;
 
     @Value("${refpath.swagger.apiinfo.license}")
