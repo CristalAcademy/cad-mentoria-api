@@ -7,6 +7,7 @@ import br.com.cristal.erp.repository.candidato.filter.CandidatoFiltro;
 import br.com.cristal.erp.repository.candidato.model.Candidato;
 import br.com.cristal.erp.repository.candidato.model.enums.StatusCandidato;
 import br.com.cristal.erp.service.candidato.CandidatoService;
+import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +23,7 @@ public class CandidatoController {
     private final CandidatoService candidatoService;
 
     @PostMapping
+    @ApiOperation("Cria um candidato através do id do usuário.")
     public ResponseEntity<CandidatoResponseBody> create(
             @RequestHeader(value="Authorization") String headerToken,
             @RequestBody CandidatoPostRequestBody request
