@@ -36,7 +36,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         if (usuario == null ) {
             usuarioRepository.save(
                     Usuario.builder()
-                            .nomecompleto("admin")
+                            .nomecompleto("Alanis Emanuela Pinheiro de Oliveira")
                             .email("alanisemanuela950@gmail.com")
                             .senha("$2a$12$P2QHsp/rOG7i62ow23Z.5O4VjNp0C1JubkJjc6OpLC84SurH4UeWi")
                             .perfil(Perfil.ADMIN)
@@ -72,6 +72,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/recuperar-senha")
                 .permitAll()
                 .antMatchers(HttpMethod.PATCH,"/recuperar-senha/confirmar")
+                .permitAll()
+                .antMatchers(HttpMethod.POST, "/cadastro")
                 .permitAll()
                 .anyRequest()
                 .authenticated()

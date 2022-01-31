@@ -1,6 +1,6 @@
 package br.com.cristal.erp.service.candidato;
 
-import br.com.cristal.erp.controller.candidato.dto.SenhaDto;
+import br.com.cristal.erp.controller.usuario.dto.SenhaDto;
 import br.com.cristal.erp.exception.AcessDeniedException;
 import br.com.cristal.erp.exception.InternalServerErrorException;
 import br.com.cristal.erp.repository.controrecovery.ControlRecoveryRepository;

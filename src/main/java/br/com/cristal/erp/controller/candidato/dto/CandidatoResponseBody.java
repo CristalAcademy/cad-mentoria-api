@@ -16,8 +16,8 @@ import java.time.LocalDate;
 public class CandidatoResponseBody {
     private Long id;
     private String name;
-    private String email;
     private String senha;
+    private String email;
     private Perfil perfil;
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate dtNasc;
