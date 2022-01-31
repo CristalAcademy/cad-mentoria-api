@@ -48,6 +48,15 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
+                .antMatchers(
+                        "/v2/api-docs",
+                        "/configuration/ui",
+                        "/swagger-resources/**",
+                        "/configuration/security",
+                        "/swagger-ui.html",
+                        "/webjars/**"
+                )
+                .permitAll()
                 .antMatchers("/authenticate", "**/authenticate", "**authenticate**")
                 .permitAll()
                 .antMatchers(HttpMethod.POST, "/recuperar-senha")
