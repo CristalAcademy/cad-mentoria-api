@@ -39,7 +39,6 @@ public class CandidatoService {
 
 
     public CandidatoResponseBody replace(String headerToken, CandidatoPutRequestBody requestPutCandidato) {
-
         // pega usuário pelo email
         Usuario usuario = customUserDetailsService
                 .loadUserByEmailAndReturnsUsuario(
@@ -54,7 +53,6 @@ public class CandidatoService {
         Candidato updatedCandidato = candidatoRepository.save(candidatoToBeUpdated);
 
         return CandidatoMapper.INSTANCE.toResponseBody(updatedCandidato);
-
     }
 
     public Candidato findByIdOrThrowBadRequestException(long id) {

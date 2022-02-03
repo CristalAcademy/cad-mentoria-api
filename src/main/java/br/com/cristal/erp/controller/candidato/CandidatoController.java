@@ -40,7 +40,7 @@ public class CandidatoController {
         return ResponseEntity.ok(candidatoService.classeCandidato(id));
     }
 
-    @PutMapping
+    @PutMapping("/{id}")
     public ResponseEntity<CandidatoResponseBody> replace(
             @RequestHeader(value = "Authorization") String headerToken,
             @RequestBody CandidatoPutRequestBody candidatoPutRequestBody
