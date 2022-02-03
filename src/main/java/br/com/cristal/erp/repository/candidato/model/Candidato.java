@@ -2,6 +2,7 @@ package br.com.cristal.erp.repository.candidato.model;
 
 import br.com.cristal.erp.repository.candidato.model.enums.ClasseCandidato;
 import br.com.cristal.erp.repository.candidato.model.enums.StatusCandidato;
+import br.com.cristal.erp.repository.usuario.model.Usuario;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -15,12 +16,9 @@ import java.time.LocalDate;
 @Data
 @Table(name = "candidato")
 public class Candidato {
+
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String nome;
-    private String email;
-    private String senha;
     private LocalDate dtNasc;
     private Boolean trabalha;
     private Boolean estuda;
@@ -33,4 +31,13 @@ public class Candidato {
     private String motivacao;
     private LocalDate entrevista;
     private LocalDate disponibilidade;
+
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private Usuario usuario;
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+        this.id = usuario.getId();
+    }
 }

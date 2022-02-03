@@ -15,8 +15,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class CandidatoResponseBody {
     private Long id;
-    private String name;
-    private String senha;
+    private String nomeCompleto;
     private String email;
     private Perfil perfil;
     @JsonFormat(pattern = "yyyy-MM-dd")
@@ -32,6 +31,4 @@ public class CandidatoResponseBody {
     private LocalDate entrevista;
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate disponibilidade;
-
-
 }

@@ -28,24 +28,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
     private final UsuarioRepository usuarioRepository;
     private final JwtFilter jwtFilter;
 
-    @Bean
-    void setAdminPerfil(){
 
-        Usuario usuario = usuarioRepository.findByEmail("admin@admin.com");
-
-        if (usuario == null ) {
-            usuarioRepository.save(
-                    Usuario.builder()
-                            .nomecompleto("Alanis Emanuela Pinheiro de Oliveira")
-                            .email("alanisemanuela950@gmail.com")
-                            .senha("$2a$12$P2QHsp/rOG7i62ow23Z.5O4VjNp0C1JubkJjc6OpLC84SurH4UeWi")
-                            .perfil(Perfil.ADMIN)
-                            .build()
-            );
-
-        }
-
-    }
 
     @Bean
     AuthenticationProvider authenticationProvider(){
@@ -54,6 +37,24 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
             provider.setPasswordEncoder(new BCryptPasswordEncoder());
         return provider;
     }
+
+    @Bean
+    void setAdminPerfil(){
+
+        Usuario usuario = usuarioRepository.findByEmail("alanisemanuela950@gmail.com");
+
+        if (usuario == null ) {
+            usuarioRepository.save(
+                    Usuario.builder()
+                            .nomeCompleto("Alanis Emanuela Pinheiro de Oliveira")
+                            .email("alanisemanuela950@gmail.com")
+                            .senha("$2a$12$P2QHsp/rOG7i62ow23Z.5O4VjNp0C1JubkJjc6OpLC84SurH4UeWi")
+                            .perfil(Perfil.ADMIN)
+                            .build()
+            );
+        }
+    }
+
 
     @Override
     @Bean
@@ -67,7 +68,9 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/authenticate", "**/authenticate")
+                .antMatchers("/authenticate", "**/authenticate", "**authenticate**")
+                .permitAll()
+                .antMatchers("/candidatos/step/user")
                 .permitAll()
                 .antMatchers(HttpMethod.POST, "/recuperar-senha")
                 .permitAll()

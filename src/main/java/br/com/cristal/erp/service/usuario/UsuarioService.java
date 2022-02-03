@@ -1,5 +1,6 @@
 package br.com.cristal.erp.service.usuario;
 
+import br.com.cristal.erp.controller.candidato.dto.CandidatoRequestUser;
 import br.com.cristal.erp.controller.usuario.dto.UsuarioPostRequestBody;
 import br.com.cristal.erp.controller.usuario.dto.UsuarioResponseBody;
 import br.com.cristal.erp.mapper.UsuarioMapper;
@@ -16,7 +17,7 @@ public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
 
-    public UsuarioResponseBody cadastrarUsuario(UsuarioPostRequestBody postRequest) {
+    public UsuarioResponseBody cadastrarUsuario(CandidatoRequestUser postRequest) {
         Usuario usuarioToBeSaved = UsuarioMapper.INSTANCE.toUsuario(postRequest);
 
         //

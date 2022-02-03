@@ -9,11 +9,11 @@ import org.mapstruct.Mapper;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.mapstruct.factory.Mappers;
 
-@Mapper(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+@Mapper(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE, componentModel = "spring")
 public abstract class UsuarioMapper {
     public static final UsuarioMapper INSTANCE = Mappers.getMapper(UsuarioMapper.class);
 
-    public abstract Usuario toUsuario(UsuarioPostRequestBody usuarioPostRequestBody);
+//    public abstract Usuario toUsuario(UsuarioPostRequestBody usuarioPostRequestBody);
 
     public abstract Usuario toUsuario(CandidatoRequestUser candidatoRequestUser);
 

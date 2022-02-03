@@ -23,6 +23,19 @@ public class RestExceptionHandler {
         );
     }
 
+    @ExceptionHandler(NotFound.class)
+    public ResponseEntity<NotFoundDetails> handlerNotFound(NotFound not){
+        return new ResponseEntity<>(
+                NotFoundDetails
+                        .builder()
+                        .details(not.getMessage())
+                        .title("Not Found Exception")
+                        .timeStamp(LocalDateTime.now())
+                        .status(HttpStatus.NOT_FOUND.value())
+                        .build() , HttpStatus.NOT_FOUND
+        );
+    }
+
     @ExceptionHandler(AcessDeniedException.class)
     public  ResponseEntity<AcessDeniedExceptionDetails> handlerAcessDeniedException(AcessDeniedException ade){
         return new ResponseEntity<>(
@@ -46,5 +59,4 @@ public class RestExceptionHandler {
                         .build() , HttpStatus.INTERNAL_SERVER_ERROR
         );
     }
-
 }
