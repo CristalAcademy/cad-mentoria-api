@@ -1,8 +1,10 @@
 package br.com.cristal.erp.controller.candidato;
 
-import br.com.cristal.erp.controller.candidato.dto.CandidatoPostRequestBody;
+
 import br.com.cristal.erp.controller.candidato.dto.CandidatoPutRequestBody;
 import br.com.cristal.erp.controller.candidato.dto.CandidatoResponseBody;
+import br.com.cristal.erp.repository.candidato.filter.CandidatoFiltro;
+import br.com.cristal.erp.repository.candidato.model.enums.ClasseCandidato;
 import br.com.cristal.erp.repository.candidato.filter.CandidatoFiltro;
 import br.com.cristal.erp.repository.candidato.model.Candidato;
 import br.com.cristal.erp.repository.candidato.model.enums.StatusCandidato;
@@ -20,6 +22,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @Log4j2
 public class CandidatoController {
+
     private final CandidatoService candidatoService;
 
     @PostMapping
@@ -32,31 +35,36 @@ public class CandidatoController {
     }
 
     @GetMapping(value = "/{id}")
-    public ResponseEntity<CandidatoResponseBody> buscarId(@PathVariable Long id){
+    public ResponseEntity<CandidatoResponseBody> buscarId(@PathVariable Long id) {
         return ResponseEntity.ok(candidatoService.findByIdOrThrowBadRequestExceptionReturnsCandidatoResponse(id));
     }
 
     @GetMapping
-    public ResponseEntity<List<CandidatoResponseBody>> buscarComFiltro(CandidatoFiltro filtro){
+    public ResponseEntity<List<CandidatoResponseBody>> buscarComFiltro(CandidatoFiltro filtro) {
         return ResponseEntity.ok().body(candidatoService.buscaComFiltro(filtro));
     }
 
     @GetMapping(value = "/{id}/status")
-    public ResponseEntity<StatusCandidato> buscarStatus(@PathVariable Long id){
+    public ResponseEntity<StatusCandidato> buscarStatus(@PathVariable Long id) {
         return ResponseEntity.ok(candidatoService.statusCandidato(id));
     }
 
-    @PutMapping
-    public ResponseEntity<CandidatoResponseBody> replace(
-            @RequestHeader(value="Authorization") String headerToken,
-            @RequestBody CandidatoPutRequestBody candidatoPutRequestBody
-    ){
-        return ResponseEntity.status(200).body(candidatoService.replace(headerToken, candidatoPutRequestBody));
+    @GetMapping(value = "/{id}/classe")
+    public ResponseEntity<ClasseCandidato> buscarClasse(@PathVariable Long id) {
+        return ResponseEntity.ok(candidatoService.classeCandidato(id));
     }
 
-    @DeleteMapping( value = "/{id}")
+    @PutMapping("/{id}")
+    public ResponseEntity<CandidatoResponseBody> replace(
+            @RequestBody CandidatoPutRequestBody candidatoPutRequestBody,
+            @PathVariable Long id
+    ) {
+        return ResponseEntity.status(200).body(candidatoService.replace(candidatoPutRequestBody, id));
+    }
+
+    @DeleteMapping(value = "/{id}")
     public ResponseEntity<Void> delete(
-            @RequestHeader(value="Authorization") String headerToken,
+            @RequestHeader(value = "Authorization") String headerToken,
             @PathVariable Long id
     ) {
         candidatoService.delete(headerToken, id);

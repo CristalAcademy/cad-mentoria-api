@@ -59,6 +59,8 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .antMatchers("/authenticate", "**/authenticate", "**authenticate**")
                 .permitAll()
+                .antMatchers("/candidatos/step/user")
+                .permitAll()
                 .antMatchers(HttpMethod.POST, "/recuperar-senha")
                 .permitAll()
                 .antMatchers(HttpMethod.PATCH,"/recuperar-senha/confirmar")

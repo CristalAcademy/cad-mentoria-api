@@ -1,6 +1,6 @@
 package br.com.cristal.erp.controller.usuario;
 
-import br.com.cristal.erp.controller.usuario.dto.UsuarioPostRequestBody;
+import br.com.cristal.erp.controller.candidato.dto.CandidatoRequestUser;
 import br.com.cristal.erp.controller.usuario.dto.UsuarioResponseBody;
 import br.com.cristal.erp.service.usuario.UsuarioService;
 import lombok.RequiredArgsConstructor;
@@ -18,8 +18,7 @@ public class UsuarioController {
     private final UsuarioService usuarioService;
 
     @PostMapping
-    public ResponseEntity<UsuarioResponseBody> cadastrarUsuario(@RequestBody UsuarioPostRequestBody postRequest){
+    public ResponseEntity<UsuarioResponseBody> cadastrarUsuario(@RequestBody CandidatoRequestUser postRequest){
         return ResponseEntity.ok().body(usuarioService.cadastrarUsuario(postRequest));
     }
-
 }

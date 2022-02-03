@@ -1,18 +1,25 @@
 package br.com.cristal.erp.service.candidato;
 
+import br.com.cristal.erp.controller.candidato.dto.*;
 import br.com.cristal.erp.config.usuarioConfig.CustomUserDetailsService;
-import br.com.cristal.erp.controller.candidato.dto.CandidatoPostRequestBody;
 import br.com.cristal.erp.controller.candidato.dto.CandidatoPutRequestBody;
 import br.com.cristal.erp.controller.candidato.dto.CandidatoResponseBody;
+import br.com.cristal.erp.controller.usuario.dto.UsuarioResponseBody;
 import br.com.cristal.erp.exception.AcessDeniedException;
 import br.com.cristal.erp.exception.BadRequestsException;
+import br.com.cristal.erp.exception.NotFound;
 import br.com.cristal.erp.mapper.CandidatoMapper;
+import br.com.cristal.erp.mapper.UsuarioMapper;
 import br.com.cristal.erp.repository.candidato.CandidatoRepository;
 import br.com.cristal.erp.repository.candidato.filter.CandidatoFiltro;
 import br.com.cristal.erp.repository.candidato.model.Candidato;
+import br.com.cristal.erp.repository.candidato.model.enums.ClasseCandidato;
 import br.com.cristal.erp.repository.candidato.model.enums.StatusCandidato;
-import br.com.cristal.erp.repository.candidato.specifications.CandidatoSpecifications;
+import br.com.cristal.erp.repository.usuario.UsuarioRepository;
+import br.com.cristal.erp.repository.usuario.model.Perfil;
 import br.com.cristal.erp.repository.usuario.model.Usuario;
+import br.com.cristal.erp.repository.candidato.specifications.CandidatoSpecifications;
+import br.com.cristal.erp.service.usuario.UsuarioService;
 import br.com.cristal.erp.util.JWTUtility;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,79 +31,160 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class CandidatoService {
 
-    private CandidatoRepository candidatoRepository;
-    private JWTUtility jwtUtility;
-    private CustomUserDetailsService customUserDetailsService;
+    private final CandidatoMapper candidatoMapper;
+    private final CandidatoRepository candidatoRepository;
+    private final JWTUtility jwtUtility;
+    private final CustomUserDetailsService customUserDetailsService;
+
+    private final UsuarioService usuarioService;
 
 
-    public CandidatoResponseBody replace(String headerToken, CandidatoPutRequestBody requestPutCandidato) {
-
+    public CandidatoResponseBody replace(CandidatoPutRequestBody requestPutCandidato, Long id) {
         // pega usuário pelo email
         Usuario usuario = customUserDetailsService
                 .loadUserByEmailAndReturnsUsuario(
-                        jwtUtility.getEmailFromToken(headerToken.substring(7))
+                        jwtUtility.getEmailFromToken()
                 );
 
-        Candidato candidatoFound = findByIdOrThrowBadRequestException(usuario.getId());
+        Long idToBeUpdated = verifyUser(usuario, id);
+
+        Candidato candidatoFound = findByIdOrThrowBadRequestException(idToBeUpdated);
         Candidato candidatoToBeUpdated = CandidatoMapper.INSTANCE.toCandidato(requestPutCandidato);
 
         candidatoToBeUpdated.setId(candidatoFound.getId());
+        candidatoToBeUpdated.setUsuario(candidatoFound.getUsuario());
 
         Candidato updatedCandidato = candidatoRepository.save(candidatoToBeUpdated);
 
         return CandidatoMapper.INSTANCE.toResponseBody(updatedCandidato);
-
     }
 
-    public Candidato findByIdOrThrowBadRequestException(long id){
+    private Long verifyUser(Usuario usuario, Long id) {
+        Long idCandidato = null;
+        if (!usuario.getPerfil().equals(Perfil.ADMIN) && !usuario.getId().equals(id)) {
+            throw new AcessDeniedException("Você não tem permissão para fazer atualizações nesse candidato");
+        }
+        if (usuario.getPerfil().equals(Perfil.ADMIN)) {
+            idCandidato = id;
+        }
+        if (usuario.getPerfil().equals(Perfil.CANDIDATO)) {
+            idCandidato = usuario.getId();
+        }
+        return idCandidato;
+    }
+
+    public Candidato findByIdOrThrowBadRequestException(long id) {
         return candidatoRepository.findById(id)
-                .orElseThrow(() -> new BadRequestsException("Cadidato não encontrado"));
+                .orElseThrow(() -> new NotFound("Cadidato não encontrado"));
     }
 
-    public CandidatoResponseBody findByIdOrThrowBadRequestExceptionReturnsCandidatoResponse(long id){
+    public CandidatoResponseBody findByIdOrThrowBadRequestExceptionReturnsCandidatoResponse(long id) {
         Candidato candidato = findByIdOrThrowBadRequestException(id);
         return CandidatoMapper.INSTANCE.toResponseBody(candidato);
     }
 
-    public CandidatoResponseBody save(String headerToken, CandidatoPostRequestBody candidatoPost){
+    public CandidatoResponseBody socialSave(
+            CandidatoRequestSocial candidatoRequestSocial,
+            String token) {
 
-        // pega usuário pelo email
-        Usuario usuario = customUserDetailsService
-                .loadUserByEmailAndReturnsUsuario(
-                    jwtUtility.getEmailFromToken(headerToken.substring(7))
-                );
+        String email = jwtUtility.getEmailFromToken(token.substring(7));
 
-        // excessão caso já esteja cadastrado
-        if(candidatoRepository.findById(usuario.getId()).isPresent()){
-            throw new BadRequestsException("Candidato Já Cadastrado");
-        }
+        Usuario user = customUserDetailsService.loadUserByEmailAndReturnsUsuario(email);
 
-        Candidato candidatoToBeSaved = CandidatoMapper.INSTANCE.toCandidato(candidatoPost);
-        candidatoToBeSaved.setId(usuario.getId());
+        Candidato candidato = candidatoRepository.findById(user.getId())
+                .orElseThrow(() -> new NotFound("Candidato não cadastrado"));
 
-        Candidato candidato = candidatoRepository.save(candidatoToBeSaved);
+        Candidato candidatoSocial = CandidatoMapper.INSTANCE.toCandidatoSocial(candidatoRequestSocial);
+
+        mapSocial(candidato, candidatoSocial);
+
+        candidato = candidatoRepository.save(candidato);
+        return CandidatoMapper.INSTANCE.toResponseBody(candidato);
+    }
+
+    private void mapSocial(Candidato candidato, Candidato candidatoSocial) {
+        candidato.setEntrevista(candidatoSocial.getEntrevista());
+        candidato.setMotivacao(candidatoSocial.getMotivacao());
+        candidato.setClasse(candidatoSocial.getClasse());
+        candidato.setStatus(StatusCandidato.AGUARDANDO);
+    }
+
+    public CandidatoResponseBody compSave(
+            CandidatoRequestComplemento candidatoRequestComplemento,
+            String token) {
+
+        String email = jwtUtility.getEmailFromToken(token.substring(7));
+
+        Usuario user = customUserDetailsService.loadUserByEmailAndReturnsUsuario(email);
+
+        Candidato candidatoComp = CandidatoMapper.INSTANCE.toCandidatoComp(candidatoRequestComplemento);
+
+        Candidato candidato = candidatoRepository.findById(user.getId())
+                .orElse(CandidatoMapper.INSTANCE.toCandidatoComp(candidatoRequestComplemento));
+
+        // TODO verificar um modo de por no mapstruct
+        mapComplemento(candidato, candidatoComp);
+
+        candidato.setUsuario(user);
+
+        candidato = candidatoRepository.save(candidato);
 
         return CandidatoMapper.INSTANCE.toResponseBody(candidato);
     }
 
-    public void delete(String headerToken, Long id){
-        String userEmail = jwtUtility.getEmailFromToken(headerToken.substring(7));
+    private void mapComplemento(Candidato candidato, Candidato candidatoComp) {
+        candidato.setDtNasc(candidatoComp.getDtNasc());
+        candidato.setTrabalha(candidatoComp.getTrabalha());
+        candidato.setEstuda(candidatoComp.getEstuda());
+        candidato.setHrsDisponiveis(candidatoComp.getHrsDisponiveis());
+        candidato.setProgramou(candidatoComp.getProgramou());
+        candidato.setDisponibilidade(candidatoComp.getDisponibilidade());
+        candidato.setStatus(StatusCandidato.CADASTRO_SOCIAL);
+    }
+
+
+    public void delete(String headerToken, Long id) {
+        String userEmail = jwtUtility.getEmailFromToken(headerToken);
         Usuario usuario = customUserDetailsService.loadUserByEmailAndReturnsUsuario(userEmail);
 
-        if(!id.equals(usuario.getId())){
+        if (!id.equals(usuario.getId())) {
             throw new AcessDeniedException("Permissão Negada");
         }
+    }
 
+    public CandidatoResponseBody userSave(CandidatoRequestUser candidatoUser) {
+
+        UsuarioResponseBody usuarioResponseBody = usuarioService.cadastrarUsuario(candidatoUser);
+        return  candidatoMapper.toCandidato(usuarioResponseBody);
+    }
+
+    public void delete(Long id) {
         Candidato candidatoToBeDeleted = findByIdOrThrowBadRequestException(id);
         candidatoRepository.delete(candidatoToBeDeleted);
     }
 
-    public StatusCandidato statusCandidato(long id){
+    public StatusCandidato statusCandidato(long id) {
         Candidato candidato = candidatoRepository
                 .findById(id)
-                .orElseThrow(() -> new BadRequestsException("Candidato Não Encontrado"));
+                .orElseThrow(() -> new NotFound("Candidato Não Encontrado"));
 
         return candidato.getStatus();
+    }
+
+    public List<CandidatoResponseBody> buscaComFiltro(CandidatoFiltro filtro) {
+        return candidatoRepository
+                .findAll(new CandidatoSpecifications(filtro))
+                .stream()
+                .map(CandidatoMapper.INSTANCE::toResponseBody)
+                .collect(Collectors.toList());
+    }
+
+    public ClasseCandidato classeCandidato(long id) {
+        Candidato candidato = candidatoRepository
+                .findById(id)
+                .orElseThrow(() -> new NotFound("Candidato Não Encontrado"));
+
+        return candidato.getClasse();
     }
 
     public List<CandidatoResponseBody> buscaComFiltro(CandidatoFiltro filtro){

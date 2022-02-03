@@ -32,6 +32,7 @@ public class JwtFilter extends OncePerRequestFilter {
 
 
         if (null != authorization && authorization.startsWith("Bearer ")) {
+            token = authorization.substring(7);
             username = jwtUtility.getEmailFromToken(token);
         }
 

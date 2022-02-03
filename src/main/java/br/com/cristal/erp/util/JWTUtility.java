@@ -4,10 +4,12 @@ package br.com.cristal.erp.util;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
@@ -21,12 +23,23 @@ public class JWTUtility implements Serializable {
 
     public static final long JWT_TOKEN_VALIDITY = 5 * 60 * 60;
 
+    @Autowired
+    private  HttpServletRequest request;
+
     @Value("${jwt.secret}")
     private String secretKey;
 
     //retrieve username from jwt token
+    @Deprecated
     public String getEmailFromToken(String token) {
         return getClaimFromToken(token, Claims::getSubject);
+    }
+
+    public String getEmailFromToken() {
+        String token = request.getHeader("Authorization");
+        String reduceToken = token.substring(7);
+
+        return getEmailFromToken(reduceToken);
     }
 
     //retrieve expiration date from jwt token
