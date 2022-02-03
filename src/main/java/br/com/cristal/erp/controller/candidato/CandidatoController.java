@@ -42,10 +42,10 @@ public class CandidatoController {
 
     @PutMapping("/{id}")
     public ResponseEntity<CandidatoResponseBody> replace(
-            @RequestHeader(value = "Authorization") String headerToken,
-            @RequestBody CandidatoPutRequestBody candidatoPutRequestBody
+            @RequestBody CandidatoPutRequestBody candidatoPutRequestBody,
+            @PathVariable Long id
     ) {
-        return ResponseEntity.status(200).body(candidatoService.replace(headerToken, candidatoPutRequestBody));
+        return ResponseEntity.status(200).body(candidatoService.replace(candidatoPutRequestBody, id));
     }
 
     @DeleteMapping(value = "/{id}")
