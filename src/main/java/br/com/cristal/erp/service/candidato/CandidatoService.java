@@ -186,12 +186,4 @@ public class CandidatoService {
 
         return candidato.getClasse();
     }
-
-    public List<CandidatoResponseBody> buscaComFiltro(CandidatoFiltro filtro){
-        return candidatoRepository
-                .findAll(new CandidatoSpecifications(filtro))
-                .stream()
-                .map(CandidatoMapper.INSTANCE::toResponseBody)
-                .collect(Collectors.toList());
-    }
 }

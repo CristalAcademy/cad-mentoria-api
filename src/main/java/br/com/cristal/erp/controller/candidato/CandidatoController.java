@@ -25,14 +25,6 @@ public class CandidatoController {
 
     private final CandidatoService candidatoService;
 
-    @PostMapping
-    @ApiOperation("Cria um candidato através do id do usuário.")
-    public ResponseEntity<CandidatoResponseBody> create(
-            @RequestHeader(value="Authorization") String headerToken,
-            @RequestBody CandidatoPostRequestBody request
-    ){
-        return ResponseEntity.status(201).body(candidatoService.save(headerToken, request));
-    }
 
     @GetMapping(value = "/{id}")
     public ResponseEntity<CandidatoResponseBody> buscarId(@PathVariable Long id) {
