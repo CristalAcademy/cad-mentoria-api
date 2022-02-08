@@ -3,4 +3,5 @@ jwt:
 
 api:
   links:
-    recuperar-senha: ${FRONT_HOST:http://localhost:4200}
+    host: ${FRONT_HOST:http://localhost:4200}
+    recuperar-senha: ${api.links.host}/recuperar-senha
