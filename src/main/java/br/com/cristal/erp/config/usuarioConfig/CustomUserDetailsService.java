@@ -17,9 +17,9 @@ public class CustomUserDetailsService implements UserDetailsService {
     private final UsuarioRepository usuarioRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String nome) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
-        Usuario usuario = usuarioRepository.findByNomeusuario(nome);
+        Usuario usuario = usuarioRepository.findByEmail(email);
         if(usuario == null){
             log.info("Usuário Ínvalido");
             throw new UsernameNotFoundException("Usuário Ínvalido!");
@@ -27,9 +27,19 @@ public class CustomUserDetailsService implements UserDetailsService {
         return new CustomUserDetails(usuario);
     }
 
-    public Usuario loadUserByUsernameAndReturnsUsuario(String nome) throws UsernameNotFoundException {
+    public UserDetails loadUserByEmail(String email) throws UsernameNotFoundException {
 
-        Usuario usuario = usuarioRepository.findByNomeusuario(nome);
+        Usuario usuario = usuarioRepository.findByEmail(email);
+        if(usuario == null){
+            log.info("Usuário Ínvalido");
+            throw new UsernameNotFoundException("Usuário Ínvalido!");
+        }
+        return new CustomUserDetails(usuario);
+    }
+
+    public Usuario loadUserByEmailAndReturnsUsuario(String email) throws UsernameNotFoundException {
+
+        Usuario usuario = usuarioRepository.findByEmail(email);
         if(usuario == null){
             log.info("Usuário Ínvalido");
             throw new UsernameNotFoundException("Usuário Ínvalido!");

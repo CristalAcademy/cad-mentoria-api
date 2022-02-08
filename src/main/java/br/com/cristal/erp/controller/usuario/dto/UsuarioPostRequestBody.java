@@ -1,14 +1,12 @@
-package br.com.cristal.erp.config.model;
+package br.com.cristal.erp.controller.usuario.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor
-@NoArgsConstructor
-public class JwtRequest {
-
+public class UsuarioPostRequestBody {
+    private String nomecompleto;
     private String email;
     private String senha;
 }

@@ -19,7 +19,9 @@ public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String nomeusuario;
+    private String nomeCompleto;
+    @Column(unique = true)
+    private String email;
     private String senha;
     private Perfil perfil;
 }
