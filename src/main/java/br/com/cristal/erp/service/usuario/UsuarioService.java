@@ -1,5 +1,6 @@
 package br.com.cristal.erp.service.usuario;
 
+import br.com.cristal.erp.config.usuarioConfig.CustomUserDetailsService;
 import br.com.cristal.erp.controller.candidato.dto.CandidatoRequestUser;
 import br.com.cristal.erp.controller.usuario.dto.UsuarioPostRequestBody;
 import br.com.cristal.erp.controller.usuario.dto.UsuarioResponseBody;
@@ -7,6 +8,7 @@ import br.com.cristal.erp.mapper.UsuarioMapper;
 import br.com.cristal.erp.repository.usuario.UsuarioRepository;
 import br.com.cristal.erp.repository.usuario.model.Perfil;
 import br.com.cristal.erp.repository.usuario.model.Usuario;
+import br.com.cristal.erp.util.JWTUtility;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,9 @@ import org.springframework.stereotype.Service;
 public class UsuarioService {
 
     private final UsuarioRepository usuarioRepository;
+    private final CustomUserDetailsService customUserDetailsService;
+    private final JWTUtility jwtUtility;
+    private final UsuarioMapper usuarioMapper;
 
     public UsuarioResponseBody cadastrarUsuario(CandidatoRequestUser postRequest) {
         Usuario usuarioToBeSaved = UsuarioMapper.INSTANCE.toUsuario(postRequest);
@@ -32,5 +37,13 @@ public class UsuarioService {
 
         Usuario savedUsuario = usuarioRepository.save(usuarioToBeSaved);
         return UsuarioMapper.INSTANCE.toResponseBody(savedUsuario);
+    }
+
+    public UsuarioResponseBody buscarUsuario() {
+
+        Usuario usuario = customUserDetailsService.loadUserByEmailAndReturnsUsuario(
+                jwtUtility.getEmailFromToken()
+        );
+        return usuarioMapper.toResponseBody(usuario);
     }
 }
