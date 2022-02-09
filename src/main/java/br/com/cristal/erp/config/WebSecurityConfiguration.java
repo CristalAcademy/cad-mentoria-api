@@ -1,8 +1,5 @@
 package br.com.cristal.erp.config;
 
-import br.com.cristal.erp.repository.usuario.UsuarioRepository;
-import br.com.cristal.erp.repository.usuario.model.Perfil;
-import br.com.cristal.erp.repository.usuario.model.Usuario;
 import br.com.cristal.erp.util.filter.JwtFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -18,6 +15,11 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+
+import java.util.Arrays;
 
 @Configuration
 @EnableWebSecurity
@@ -25,27 +27,7 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private final UserDetailsService userDetailsService;
-    private final UsuarioRepository usuarioRepository;
     private final JwtFilter jwtFilter;
-
-//    @Bean
-//    void setAdminPerfil(){
-//
-//        Usuario usuario = usuarioRepository.findByEmail("admin@admin.com");
-//
-//        if (usuario == null ) {
-//            usuarioRepository.save(
-//                    Usuario.builder()
-//                            .nomecompleto("Alanis Emanuela Pinheiro de Oliveira")
-//                            .email("alanisemanuela950@gmail.com")
-//                            .senha("$2a$12$P2QHsp/rOG7i62ow23Z.5O4VjNp0C1JubkJjc6OpLC84SurH4UeWi")
-//                            .perfil(Perfil.ADMIN)
-//                            .build()
-//            );
-//
-//        }
-//
-//    }
 
     @Bean
     AuthenticationProvider authenticationProvider(){
@@ -61,13 +43,37 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
         return super.authenticationManager();
     }
 
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(Arrays.asList("*"));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
+        configuration.setAllowedHeaders(Arrays.asList("authorization", "content-type"));
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
         http
                 .csrf().disable()
+                .cors()
+                .and()
                 .authorizeRequests()
-                .antMatchers("/authenticate", "**/authenticate")
+                .antMatchers(
+                        "/v2/api-docs",
+                        "/configuration/ui",
+                        "/swagger-resources/**",
+                        "/configuration/security",
+                        "/swagger-ui.html",
+                        "/webjars/**"
+                )
+                .permitAll()
+                .antMatchers("/authenticate", "**/authenticate", "**authenticate**")
+                .permitAll()
+                .antMatchers("/candidatos/step/user")
                 .permitAll()
                 .antMatchers(HttpMethod.POST, "/recuperar-senha")
                 .permitAll()
