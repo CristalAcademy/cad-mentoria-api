@@ -5,7 +5,6 @@ import br.com.cristal.erp.controller.usuario.dto.UsuarioResponseBody;
 import br.com.cristal.erp.repository.candidato.model.Candidato;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.mapstruct.factory.Mappers;
 
 @Mapper(componentModel = "spring")
