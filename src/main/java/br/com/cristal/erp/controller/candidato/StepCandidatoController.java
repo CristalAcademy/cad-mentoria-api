@@ -2,8 +2,8 @@ package br.com.cristal.erp.controller.candidato;
 
 import br.com.cristal.erp.controller.candidato.dto.CandidatoRequestComplemento;
 import br.com.cristal.erp.controller.candidato.dto.CandidatoRequestSocial;
-import br.com.cristal.erp.controller.candidato.dto.CandidatoRequestUser;
 import br.com.cristal.erp.controller.candidato.dto.CandidatoResponseBody;
+import br.com.cristal.erp.controller.usuario.dto.UsuarioRequest;
 import br.com.cristal.erp.service.candidato.CandidatoService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,7 +17,7 @@ public class StepCandidatoController {
     private CandidatoService candidatoService;
 
     @PostMapping(value = "step/user")
-    public ResponseEntity<CandidatoResponseBody> createUser(@RequestBody CandidatoRequestUser requestUser){
+    public ResponseEntity<CandidatoResponseBody> createUser(@RequestBody UsuarioRequest requestUser){
         return ResponseEntity.status(201).body(candidatoService.userSave(requestUser));
     }
 

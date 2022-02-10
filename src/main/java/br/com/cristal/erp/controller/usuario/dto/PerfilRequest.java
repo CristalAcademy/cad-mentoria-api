@@ -1,6 +1,6 @@
-package br.com.cristal.erp.repository.usuario.model;
+package br.com.cristal.erp.controller.usuario.dto;
 
-public enum Perfil {
+public enum PerfilRequest {
     INIT,
     CANDIDATO,
     DISCIPULO,

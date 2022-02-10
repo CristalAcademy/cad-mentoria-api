@@ -4,7 +4,7 @@ import br.com.cristal.erp.controller.menu.dto.MenuRequest;
 import br.com.cristal.erp.controller.menu.dto.MenuResponse;
 import br.com.cristal.erp.mapper.MenuMapper;
 import br.com.cristal.erp.repository.menu.MenuRepository;
-import br.com.cristal.erp.repository.menu.model.Menu;
+import br.com.cristal.erp.repository.menu.model.menu.Menu;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 @AllArgsConstructor
 public class MenuService {
 
-    private MenuMapper menuMapper;
     private MenuLinker menuLinker;
     private MenuRepository menuRepository;
 
@@ -21,6 +20,6 @@ public class MenuService {
     public MenuResponse save(MenuRequest request){
         Menu menuToBeSaved = menuLinker.validateMenu(request);
         Menu menuSaved = menuRepository.save(menuToBeSaved);
-        return menuMapper.INSTANCE.toMenuResponse(menuSaved);
+        return MenuMapper.INSTANCE.toMenuResponse(menuSaved);
     }
 }

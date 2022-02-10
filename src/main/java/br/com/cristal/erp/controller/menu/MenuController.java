@@ -1,5 +1,6 @@
 package br.com.cristal.erp.controller.menu;
 
+import br.com.cristal.erp.config.annotations.isAdmin;
 import br.com.cristal.erp.controller.menu.dto.MenuRequest;
 import br.com.cristal.erp.controller.menu.dto.MenuResponse;
 import br.com.cristal.erp.service.menu.MenuService;
@@ -17,6 +18,7 @@ public class MenuController{
 
     private MenuService menuService;
 
+    @isAdmin
     @PostMapping("/create")
     public ResponseEntity<MenuResponse> save(@RequestBody MenuRequest request){
         return ResponseEntity.ok().body(menuService.save(request));

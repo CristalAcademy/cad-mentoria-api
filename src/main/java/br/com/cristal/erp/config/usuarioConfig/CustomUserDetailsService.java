@@ -2,6 +2,8 @@ package br.com.cristal.erp.config.usuarioConfig;
 
 import br.com.cristal.erp.repository.usuario.UsuarioRepository;
 import br.com.cristal.erp.repository.usuario.model.Usuario;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.security.core.userdetails.UserDetails;
