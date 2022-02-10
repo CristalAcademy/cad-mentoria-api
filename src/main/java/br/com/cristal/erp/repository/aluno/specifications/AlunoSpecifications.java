@@ -48,16 +48,6 @@ public class AlunoSpecifications implements Specification<Aluno> {
                 });
     }
 
-    public void verificaStatus(Predicate predicate, CriteriaBuilder cb, Root<Aluno> root) {
-        Optional.ofNullable(filtro)
-                .map(AlunoFiltro::getStatus)
-                .ifPresent(status -> {
-                    predicate.getExpressions().add(cb.equal(root.get("status"), status));
-                });
-    }
-
-
-
     @Override
     public Predicate toPredicate(Root<Aluno> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
 
@@ -67,7 +57,6 @@ public class AlunoSpecifications implements Specification<Aluno> {
         verificaEstuda(predicate, criteriaBuilder, root);
         verificaHorasDisponiveis(predicate, criteriaBuilder, root);
         verificaProgramou(predicate, criteriaBuilder, root);
-        verificaStatus(predicate, criteriaBuilder, root);
 
         return predicate;
     }

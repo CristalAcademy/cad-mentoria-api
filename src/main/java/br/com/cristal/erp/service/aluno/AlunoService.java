@@ -37,30 +37,18 @@ public class AlunoService {
         Usuario usuario = customUserDetailsService
                 .loadUserSession();
 
-        Aluno alunoSave = AlunoMapper.INSTANCE.toAluno(alunoRequest);
-
         Aluno aluno = alunoRepository.findById(usuario.getId())
                 .orElse(AlunoMapper.INSTANCE.toAluno(alunoRequest));
 
-        mapAluno(alunoSave, aluno);
+
+        AlunoMapper.INSTANCE.updateAlunoFromDto(alunoRequest, aluno);
+
 
         aluno.setUsuario(usuario);
 
         aluno = alunoRepository.save(aluno);
 
-
-//        Aluno aluno = AlunoMapper.INSTANCE.toAluno(alunoRequest);
-//        aluno = alunoRepository.save(aluno);
-
         return alunoMapper.INSTANCE.toAlunoResponse(aluno);
-    }
-
-    public void mapAluno(Aluno aluno, Aluno alunoSave) {
-        aluno.setDtNasc(alunoSave.getDtNasc());
-        aluno.setEstuda(alunoSave.getEstuda());
-        aluno.setProgramou(alunoSave.getProgramou());
-        aluno.setTrabalha(alunoSave.getTrabalha());
-        aluno.setHrsDisponiveis(alunoSave.getHrsDisponiveis());
     }
 
     public List<AlunoResponse> buscarComFiltro(AlunoFiltro filtro) {
@@ -86,7 +74,7 @@ public class AlunoService {
         if (usuario.getPerfil().equals(Perfil.ADMIN)) {
             idAluno = id;
         } else {
-            idAluno = id;
+            idAluno = usuario.getId();
         }
         return idAluno;
     }
@@ -99,19 +87,15 @@ public class AlunoService {
         Long idToBeUpdated = verifyUser(usuario, id);
 
         Aluno alunoFound = findByIdOrThrowBadRequestException(idToBeUpdated);
-        Aluno alunoToBeUpdate = AlunoMapper.INSTANCE.toAluno(alunoRequest);
+        AlunoMapper.INSTANCE.updateAlunoFromDto(alunoRequest, alunoFound);
 
-        alunoToBeUpdate.setId(alunoFound.getId());
-        alunoToBeUpdate.setUsuario(alunoFound.getUsuario());
-
-        Aluno updateAluno = alunoRepository.save(alunoToBeUpdate);
+        Aluno updateAluno = alunoRepository.save(alunoFound);
 
         return AlunoMapper.INSTANCE.toAlunoResponse(updateAluno);
     }
 
     public void delete(Long id) {
-        String userEmail = jwtUtility.getEmailFromToken();
-        Usuario usuario = customUserDetailsService.loadUserByEmailAndReturnsUsuario(userEmail);
+        Usuario usuario = customUserDetailsService.loadUserSession();
 
         if (!id.equals(usuario.getId())) {
             throw new AcessDeniedException("Permissão Negada");
