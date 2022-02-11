@@ -5,8 +5,8 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class UsuarioPostRequestBody {
-    private String nomecompleto;
+public class UsuarioRequest {
+    private String nomeCompleto;
     private String email;
     private String senha;
 }

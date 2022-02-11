@@ -1,18 +1,17 @@
 package br.com.cristal.erp.mapper;
 
 import br.com.cristal.erp.controller.candidato.dto.*;
-import br.com.cristal.erp.controller.usuario.dto.UsuarioResponseBody;
+import br.com.cristal.erp.controller.usuario.dto.UsuarioRequest;
+import br.com.cristal.erp.controller.usuario.dto.UsuarioResponse;
 import br.com.cristal.erp.repository.candidato.model.Candidato;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.mapstruct.factory.Mappers;
 
 @Mapper(componentModel = "spring")
 public abstract class CandidatoMapper {
     public static final CandidatoMapper INSTANCE = Mappers.getMapper(CandidatoMapper.class);
-
-    public abstract Candidato toCandidatoUser(CandidatoRequestUser candidatoRequestUser);
+    public abstract CandidatoResponseBody toCandidatoResponseBody(UsuarioRequest usuarioPost);
 
     public abstract Candidato toCandidatoComp(CandidatoRequestComplemento candidatoRequestComplemento);
 
@@ -25,5 +24,5 @@ public abstract class CandidatoMapper {
     @Mapping(target = "perfil", source = "candidato.usuario.perfil")
     public abstract CandidatoResponseBody toResponseBody(Candidato candidato);
 
-    public abstract CandidatoResponseBody toCandidato(UsuarioResponseBody usuarioResponseBody);
+    public abstract CandidatoResponseBody toCandidato(UsuarioResponse usuarioResponse);
 }
