@@ -1,9 +1,17 @@
 package br.com.cristal.erp.util;
 
 
+import br.com.cristal.erp.config.usuarioConfig.CustomUserDetailsService;
+import br.com.cristal.erp.exception.AcessDeniedException;
+import br.com.cristal.erp.repository.usuario.UsuarioRepository;
+import br.com.cristal.erp.repository.usuario.model.Perfil;
+import br.com.cristal.erp.repository.usuario.model.Usuario;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,14 +25,19 @@ import java.util.Map;
 import java.util.function.Function;
 
 @Component
+@AllArgsConstructor
+@NoArgsConstructor
 public class JWTUtility implements Serializable {
 
     private static final long serialVersionUID = 234234523523L;
 
+    @Autowired
+    private UsuarioRepository usuarioRepository;
+
     public static final long JWT_TOKEN_VALIDITY = 5 * 60 * 60;
 
     @Autowired
-    private  HttpServletRequest request;
+    private HttpServletRequest request;
 
     @Value("${jwt.secret}")
     private String secretKey;
@@ -40,6 +53,22 @@ public class JWTUtility implements Serializable {
         String reduceToken = token.substring(7);
 
         return getEmailFromToken(reduceToken);
+    }
+
+    public Long getIdFromToken() {
+        return usuarioRepository
+                .findByEmail(getEmailFromToken()).getId();
+    }
+
+    public Long verifyUser(Usuario usuario, Long id) {
+
+        if (!usuario.getPerfil().equals(Perfil.ADMIN) && !usuario.getId().equals(id)) {
+            throw new AcessDeniedException("Você não tem permissão para fazer atualizações nesse candidato");
+        }
+        if (usuario.getPerfil().equals(Perfil.ADMIN)) {
+            return id;
+        }
+        return usuario.getId();
     }
 
     //retrieve expiration date from jwt token

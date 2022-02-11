@@ -23,5 +23,6 @@ public class Usuario {
     @Column(unique = true)
     private String email;
     private String senha;
+    @Enumerated(EnumType.STRING)
     private Perfil perfil;
 }

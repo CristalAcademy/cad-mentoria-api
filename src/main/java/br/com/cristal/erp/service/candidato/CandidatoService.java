@@ -4,18 +4,16 @@ import br.com.cristal.erp.controller.candidato.dto.*;
 import br.com.cristal.erp.config.usuarioConfig.CustomUserDetailsService;
 import br.com.cristal.erp.controller.candidato.dto.CandidatoPutRequestBody;
 import br.com.cristal.erp.controller.candidato.dto.CandidatoResponseBody;
-import br.com.cristal.erp.controller.usuario.dto.UsuarioResponseBody;
+import br.com.cristal.erp.controller.usuario.dto.UsuarioRequest;
+import br.com.cristal.erp.controller.usuario.dto.UsuarioResponse;
 import br.com.cristal.erp.exception.AcessDeniedException;
-import br.com.cristal.erp.exception.BadRequestsException;
 import br.com.cristal.erp.exception.NotFound;
 import br.com.cristal.erp.mapper.CandidatoMapper;
-import br.com.cristal.erp.mapper.UsuarioMapper;
 import br.com.cristal.erp.repository.candidato.CandidatoRepository;
 import br.com.cristal.erp.repository.candidato.filter.CandidatoFiltro;
 import br.com.cristal.erp.repository.candidato.model.Candidato;
 import br.com.cristal.erp.repository.candidato.model.enums.ClasseCandidato;
 import br.com.cristal.erp.repository.candidato.model.enums.StatusCandidato;
-import br.com.cristal.erp.repository.usuario.UsuarioRepository;
 import br.com.cristal.erp.repository.usuario.model.Perfil;
 import br.com.cristal.erp.repository.usuario.model.Usuario;
 import br.com.cristal.erp.repository.candidato.specifications.CandidatoSpecifications;
@@ -46,7 +44,7 @@ public class CandidatoService {
                         jwtUtility.getEmailFromToken()
                 );
 
-        Long idToBeUpdated = verifyUser(usuario, id);
+        Long idToBeUpdated = jwtUtility.verifyUser(usuario, id);
 
         Candidato candidatoFound = findByIdOrThrowBadRequestException(idToBeUpdated);
         Candidato candidatoToBeUpdated = CandidatoMapper.INSTANCE.toCandidato(requestPutCandidato);
@@ -57,20 +55,6 @@ public class CandidatoService {
         Candidato updatedCandidato = candidatoRepository.save(candidatoToBeUpdated);
 
         return CandidatoMapper.INSTANCE.toResponseBody(updatedCandidato);
-    }
-
-    private Long verifyUser(Usuario usuario, Long id) {
-        Long idCandidato = null;
-        if (!usuario.getPerfil().equals(Perfil.ADMIN) && !usuario.getId().equals(id)) {
-            throw new AcessDeniedException("Você não tem permissão para fazer atualizações nesse candidato");
-        }
-        if (usuario.getPerfil().equals(Perfil.ADMIN)) {
-            idCandidato = id;
-        }
-        if (usuario.getPerfil().equals(Perfil.CANDIDATO)) {
-            idCandidato = usuario.getId();
-        }
-        return idCandidato;
     }
 
     public Candidato findByIdOrThrowBadRequestException(long id) {
@@ -87,7 +71,7 @@ public class CandidatoService {
             CandidatoRequestSocial candidatoRequestSocial,
             String token) {
 
-        String email = jwtUtility.getEmailFromToken(token.substring(7));
+        String email = jwtUtility.getEmailFromToken();
 
         Usuario user = customUserDetailsService.loadUserByEmailAndReturnsUsuario(email);
 
@@ -125,6 +109,8 @@ public class CandidatoService {
         // TODO verificar um modo de por no mapstruct
         mapComplemento(candidato, candidatoComp);
 
+        user.setPerfil(Perfil.CANDIDATO);
+
         candidato.setUsuario(user);
 
         candidato = candidatoRepository.save(candidato);
@@ -152,10 +138,10 @@ public class CandidatoService {
         }
     }
 
-    public CandidatoResponseBody userSave(CandidatoRequestUser candidatoUser) {
+    public CandidatoResponseBody userSave(UsuarioRequest candidatoUser) {
 
-        UsuarioResponseBody usuarioResponseBody = usuarioService.cadastrarUsuario(candidatoUser);
-        return  candidatoMapper.toCandidato(usuarioResponseBody);
+        UsuarioResponse usuarioResponse = usuarioService.cadastrarUsuario(candidatoUser);
+        return candidatoMapper.toCandidato(usuarioResponse);
     }
 
     public void delete(Long id) {
