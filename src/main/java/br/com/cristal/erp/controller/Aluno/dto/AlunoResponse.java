@@ -1,6 +1,5 @@
-package br.com.cristal.erp.controller.Aluno.dto;
+package br.com.cristal.erp.controller.aluno.dto;
 
-import br.com.cristal.erp.repository.candidato.model.enums.StatusCandidato;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;

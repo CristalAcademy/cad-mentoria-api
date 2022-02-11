@@ -1,8 +1,5 @@
 package br.com.cristal.erp.config;
 
-import br.com.cristal.erp.repository.usuario.UsuarioRepository;
-import br.com.cristal.erp.repository.usuario.model.Perfil;
-import br.com.cristal.erp.repository.usuario.model.Usuario;
 import br.com.cristal.erp.util.filter.JwtFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
@@ -11,6 +8,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -27,6 +25,7 @@ import java.util.Arrays;
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 
     private final UserDetailsService userDetailsService;
@@ -82,9 +81,9 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .antMatchers(HttpMethod.PATCH,"/recuperar-senha/confirmar")
                 .permitAll()
-                .antMatchers(HttpMethod.POST, "/usuario")
+                .antMatchers(HttpMethod.POST, "/usuarios")
                 .permitAll()
-                .antMatchers(HttpMethod.POST, "/alunos")
+                .antMatchers(HttpMethod.POST, "/usuarios/perfil/**")
                 .permitAll()
                 .anyRequest()
                 .authenticated()

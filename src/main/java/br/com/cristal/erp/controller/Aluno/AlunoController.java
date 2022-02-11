@@ -1,7 +1,7 @@
-package br.com.cristal.erp.controller.Aluno;
+package br.com.cristal.erp.controller.aluno;
 
-import br.com.cristal.erp.controller.Aluno.dto.AlunoRequest;
-import br.com.cristal.erp.controller.Aluno.dto.AlunoResponse;
+import br.com.cristal.erp.controller.aluno.dto.AlunoRequest;
+import br.com.cristal.erp.controller.aluno.dto.AlunoResponse;
 import br.com.cristal.erp.repository.aluno.filter.AlunoFiltro;
 import br.com.cristal.erp.service.aluno.AlunoService;
 import lombok.RequiredArgsConstructor;

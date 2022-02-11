@@ -1,9 +1,8 @@
 package br.com.cristal.erp.service.aluno;
 
 import br.com.cristal.erp.config.usuarioConfig.CustomUserDetailsService;
-import br.com.cristal.erp.controller.Aluno.dto.AlunoRequest;
-import br.com.cristal.erp.controller.Aluno.dto.AlunoResponse;
-import br.com.cristal.erp.controller.usuario.dto.UsuarioResponseBody;
+import br.com.cristal.erp.controller.aluno.dto.AlunoRequest;
+import br.com.cristal.erp.controller.aluno.dto.AlunoResponse;
 import br.com.cristal.erp.exception.AcessDeniedException;
 import br.com.cristal.erp.exception.NotFound;
 import br.com.cristal.erp.mapper.AlunoMapper;

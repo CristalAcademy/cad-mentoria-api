@@ -32,7 +32,7 @@ public class Candidato {
     private LocalDate entrevista;
     private LocalDate disponibilidade;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private Usuario usuario;
 
