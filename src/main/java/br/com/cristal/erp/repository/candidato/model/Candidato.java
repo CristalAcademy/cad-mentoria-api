@@ -4,6 +4,7 @@ import br.com.cristal.erp.repository.candidato.model.enums.ClasseCandidato;
 import br.com.cristal.erp.repository.candidato.model.enums.StatusCandidato;
 import br.com.cristal.erp.repository.usuario.model.Usuario;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -14,6 +15,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
+@Builder
 @Table(name = "candidato")
 public class Candidato {
 
@@ -35,6 +37,8 @@ public class Candidato {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private Usuario usuario;
+
+    private Boolean ativo;
 
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;

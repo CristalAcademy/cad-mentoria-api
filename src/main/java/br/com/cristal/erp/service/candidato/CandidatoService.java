@@ -110,6 +110,7 @@ public class CandidatoService {
         mapComplemento(candidato, candidatoComp);
 
         user.setPerfil(Perfil.CANDIDATO);
+        candidato.setAtivo(Boolean.TRUE);
 
         candidato.setUsuario(user);
 
