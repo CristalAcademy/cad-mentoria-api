@@ -1,7 +1,6 @@
 package br.com.cristal.erp.repository.aluno.model;
 
-import br.com.cristal.erp.repository.candidato.model.enums.ClasseCandidato;
-import br.com.cristal.erp.repository.candidato.model.enums.StatusCandidato;
+import br.com.cristal.erp.repository.turma.model.Turma;
 import br.com.cristal.erp.repository.usuario.model.Usuario;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,6 +8,7 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -33,4 +33,7 @@ public class Aluno {
         this.usuario = usuario;
         this.id = usuario.getId();
     }
+
+    @ManyToMany(mappedBy = "alunos")
+    List<Turma> turmas;
 }
