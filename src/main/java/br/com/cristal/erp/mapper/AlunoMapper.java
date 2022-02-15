@@ -1,7 +1,7 @@
 package br.com.cristal.erp.mapper;
 
-import br.com.cristal.erp.controller.Aluno.dto.AlunoRequest;
-import br.com.cristal.erp.controller.Aluno.dto.AlunoResponse;
+import br.com.cristal.erp.controller.aluno.dto.AlunoRequest;
+import br.com.cristal.erp.controller.aluno.dto.AlunoResponse;
 import br.com.cristal.erp.repository.aluno.model.Aluno;
 import org.mapstruct.Mapper;
 import org.mapstruct.MappingTarget;
