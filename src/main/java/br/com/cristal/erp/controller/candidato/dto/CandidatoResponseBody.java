@@ -18,6 +18,7 @@ public class CandidatoResponseBody {
     private String nomeCompleto;
     private String email;
     private Perfil perfil;
+    private Boolean ativo;
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate dtNasc;
     private Boolean trabalha;

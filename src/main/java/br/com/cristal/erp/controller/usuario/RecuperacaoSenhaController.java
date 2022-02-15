@@ -20,7 +20,6 @@ public class RecuperacaoSenhaController {
 
     @PostMapping
     public ResponseEntity<Void> recSenha(@RequestBody EmailDto emailDto){
-//        controlRecoveryService.recuperarSenha(emailDto.getEmail());
         return controlRecoveryService.recuperarSenha(emailDto.getEmail());
     }
 

@@ -1,6 +1,7 @@
 jwt:
   secret: secretkey123
 
+
 api:
   links:
     host: ${FRONT_HOST:http://localhost:4200}
