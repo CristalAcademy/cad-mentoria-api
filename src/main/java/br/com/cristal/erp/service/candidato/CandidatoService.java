@@ -97,7 +97,7 @@ public class CandidatoService {
             CandidatoRequestComplemento candidatoRequestComplemento,
             String token) {
 
-        String email = jwtUtility.getEmailFromToken(token.substring(7));
+        String email = jwtUtility.getEmailFromToken();
 
         Usuario user = customUserDetailsService.loadUserByEmailAndReturnsUsuario(email);
 
