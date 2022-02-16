@@ -27,7 +27,7 @@ public class TurmaService {
     private CustomUserDetailsService customUserDetailsService;
     private TurmaRepository turmaRepository;
 
-    public TurmaResponse criarTurma(@RequestBody TurmaRequest turmaRequest){
+    public TurmaResponse criarTurma(TurmaRequest turmaRequest){
 
         Usuario usuario = customUserDetailsService.loadUserSession();
 
@@ -41,8 +41,8 @@ public class TurmaService {
         turma.setAlunos(alunos);
         turma.setMentor(mentor);
 
-        Turma saveTurma = turmaRepository.save(turma);
+        turma = turmaRepository.save(turma);
 
-        return TurmaMapper.INSTANCE.toResponseTurma(saveTurma);
+        return TurmaMapper.INSTANCE.toResponseTurma(turma);
     }
 }
