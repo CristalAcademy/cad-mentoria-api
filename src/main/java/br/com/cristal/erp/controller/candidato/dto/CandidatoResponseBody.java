@@ -1,6 +1,7 @@
 package br.com.cristal.erp.controller.candidato.dto;
 
 import br.com.cristal.erp.repository.candidato.model.enums.ClasseCandidato;
+import br.com.cristal.erp.repository.candidato.model.enums.DisponibilidadeCandidato;
 import br.com.cristal.erp.repository.candidato.model.enums.StatusCandidato;
 import br.com.cristal.erp.repository.usuario.model.Perfil;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -31,5 +32,5 @@ public class CandidatoResponseBody {
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate entrevista;
     @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate disponibilidade;
+    private DisponibilidadeCandidato disponibilidade;
 }

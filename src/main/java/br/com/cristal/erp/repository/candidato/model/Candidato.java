@@ -1,6 +1,7 @@
 package br.com.cristal.erp.repository.candidato.model;
 
 import br.com.cristal.erp.repository.candidato.model.enums.ClasseCandidato;
+import br.com.cristal.erp.repository.candidato.model.enums.DisponibilidadeCandidato;
 import br.com.cristal.erp.repository.candidato.model.enums.StatusCandidato;
 import br.com.cristal.erp.repository.usuario.model.Usuario;
 import lombok.AllArgsConstructor;
@@ -32,7 +33,7 @@ public class Candidato {
     @Column(columnDefinition = "TEXT")
     private String motivacao;
     private LocalDate entrevista;
-    private LocalDate disponibilidade;
+    private DisponibilidadeCandidato disponibilidade;
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
