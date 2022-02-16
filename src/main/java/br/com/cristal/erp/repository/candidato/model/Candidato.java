@@ -27,12 +27,14 @@ public class Candidato {
     private Boolean estuda;
     private Integer hrsDisponiveis;
     private Boolean programou;
+    @Enumerated(EnumType.STRING)
     private ClasseCandidato classe;
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     private StatusCandidato status;
     @Column(columnDefinition = "TEXT")
     private String motivacao;
     private LocalDate entrevista;
+    @Enumerated(EnumType.STRING)
     private DisponibilidadeCandidato disponibilidade;
 
     @OneToOne(cascade = CascadeType.ALL)

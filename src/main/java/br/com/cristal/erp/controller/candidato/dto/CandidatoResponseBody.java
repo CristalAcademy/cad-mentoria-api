@@ -31,6 +31,5 @@ public class CandidatoResponseBody {
     private StatusCandidato status;
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate entrevista;
-    @JsonFormat(pattern = "yyyy-MM-dd")
     private DisponibilidadeCandidato disponibilidade;
 }
