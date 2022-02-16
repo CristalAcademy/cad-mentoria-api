@@ -21,7 +21,7 @@ public class EmailRetorno {
     @Value("${retorno-email.from}")
     private String CRISTALEMAIL;
 
-    @Value("${retorno-email.subject}")
+    @Value("${envio-email.assunto.message}")
     private String ASSUNTO;
 
     public SimpleMailMessage criarEmail(String emailUsuario, OpcaoCandidato opcao ){
@@ -32,5 +32,4 @@ public class EmailRetorno {
         message.setText(opcao.getMensagem());
         return message;
     }
-
 }
