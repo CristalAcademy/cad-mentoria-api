@@ -12,9 +12,10 @@ import br.com.cristal.erp.repository.mentor.MentorRespository;
 import br.com.cristal.erp.repository.turma.TurmaRepository;
 import br.com.cristal.erp.repository.turma.model.Turma;
 import br.com.cristal.erp.repository.usuario.model.Usuario;
+import br.com.cristal.erp.service.notificacoes.ControleNotificacoes;
+import br.com.cristal.erp.util.email.EmailNotificacaoTurma;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -24,6 +25,7 @@ public class TurmaService {
 
     private AlunoRepository alunoRepository;
     private MentorRespository mentorRespository;
+    private ControleNotificacoes controleNotificacoes;
     private CustomUserDetailsService customUserDetailsService;
     private TurmaRepository turmaRepository;
 
@@ -37,6 +39,12 @@ public class TurmaService {
                 .orElseThrow(() -> new BadRequestsException("Mentor não encontrado"));
 
         List<Aluno> alunos = alunoRepository.findAllById(turmaRequest.getIdAlunos());
+
+        alunos
+                .stream()
+                .map(Aluno::getUsuario)
+                .map(Usuario::getEmail)
+                .forEach(controleNotificacoes::notificarTurma);
 
         turma.setAlunos(alunos);
         turma.setMentor(mentor);

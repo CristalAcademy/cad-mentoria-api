@@ -1,22 +1,17 @@
 package br.com.cristal.erp.util.email;
 
-import br.com.cristal.erp.util.email.dto.OpcaoCandidato;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 
-import static java.lang.String.valueOf;
-
 @Service
 @RequiredArgsConstructor
-public class EmailRetorno {
+public class EmailNotificacaoTurma {
 
-    @Value("${retorno-email.aceite.message}")
-    private String ACEITA;
-
-    @Value("${retorno-email.recusa.message}")
-    private String RECUSA;
+    @Value("${envio-email.criacaoturma.message}")
+    private String CONVITE;
 
     @Value("${retorno-email.from}")
     private String CRISTALEMAIL;
@@ -24,12 +19,14 @@ public class EmailRetorno {
     @Value("${envio-email.assunto.message}")
     private String ASSUNTO;
 
-    public SimpleMailMessage criarEmail(String emailUsuario, OpcaoCandidato opcao ){
+    public SimpleMailMessage conviteEmail(String emailUsuario){
         SimpleMailMessage message = new SimpleMailMessage();
+
         message.setFrom(CRISTALEMAIL);
-        message.setSubject(ASSUNTO);
         message.setTo(emailUsuario);
-        message.setText(opcao.getMensagem());
+        message.setSubject(ASSUNTO);
+        message.setText(CONVITE);
+
         return message;
     }
 }
