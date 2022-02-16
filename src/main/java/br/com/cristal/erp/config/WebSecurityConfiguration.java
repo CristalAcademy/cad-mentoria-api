@@ -85,7 +85,6 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .antMatchers(HttpMethod.POST, "/usuarios/perfil/**")
                 .permitAll()
-                .antMatchers(HttpMethod.POST,"/turmas")
                 .anyRequest()
                 .authenticated()
                 .and()
