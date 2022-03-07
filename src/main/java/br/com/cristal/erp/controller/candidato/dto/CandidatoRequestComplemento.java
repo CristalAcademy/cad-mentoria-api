@@ -1,5 +1,6 @@
 package br.com.cristal.erp.controller.candidato.dto;
 
+import br.com.cristal.erp.repository.candidato.model.enums.DisponibilidadeCandidato;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -17,6 +18,5 @@ public class CandidatoRequestComplemento {
     private Boolean estuda;
     private Integer hrsDisponiveis;
     private Boolean programou;
-    @JsonFormat(pattern = "yyyy-MM-dd")
-    private LocalDate disponibilidade;
+    private DisponibilidadeCandidato disponibilidade;
 }
