@@ -50,3 +50,22 @@ api:
   links:
     host: ${FRONT_HOST:http://localhost:4200}
     recuperar-senha: ${api.links.host}/recuperar-senha
+
+# Email Default Configurations
+retorno-email:
+  from: "cristalacademysdg@gmail.com"
+  subject: "Retorno Candidatura Cristal Academy"
+  aceite:
+    message: "Parabéns você foi aceito na refinária!"
+  recusa
+  message: "Agradecemos seu interesse no projeto refinária, Infelizmente não continuaremos com sua candidatura mas agradecemos o tempo dedicado e o interesse na CristalAcademy."
+envio-email:
+  criacaoturma:
+    message: "Aqui está o convite para sua turma, entre para conhecer!!"
+  assunto:
+    message: "Criação de turma"
+
+
+
+
+
