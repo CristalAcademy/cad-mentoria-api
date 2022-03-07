@@ -57,8 +57,8 @@ retorno-email:
   subject: "Retorno Candidatura Cristal Academy"
   aceite:
     message: "Parabéns você foi aceito na refinária!"
-  recusa
-  message: "Agradecemos seu interesse no projeto refinária, Infelizmente não continuaremos com sua candidatura mas agradecemos o tempo dedicado e o interesse na CristalAcademy."
+  recusa:
+    message: "Agradecemos seu interesse no projeto refinária, Infelizmente não continuaremos com sua candidatura mas agradecemos o tempo dedicado e o interesse na CristalAcademy."
 envio-email:
   criacaoturma:
     message: "Aqui está o convite para sua turma, entre para conhecer!!"
