@@ -1,6 +1,8 @@
 jwt:
   secret: secretkey123
 
+
 api:
   links:
-    recuperar-senha: "http://localhost:4200/recuperar-senha/"
+    host: ${FRONT_HOST:http://localhost:4200}
+    recuperar-senha: ${api.links.host}/recuperar-senha

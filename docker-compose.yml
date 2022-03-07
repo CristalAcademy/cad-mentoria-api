@@ -1,10 +1,5 @@
   version: '3.1'
   services:
-    app:
-      container_name: refinaria-postgresql
-      image: postgres
-      ports:
-        - "8080:8080"
     postgresqldb:
       image: postgres
       ports:
@@ -13,3 +8,5 @@
         - POSTGRES_PASSWORD=cristal
         - POSTGRES_USER=cristal
         - POSTGRES_DB=postgres
+      volumes:
+        - ./src/main/resources/postgres_testdata:/var/lib/postgres
