@@ -2,6 +2,7 @@ package br.com.cristal.erp.controller.authenticate;
 
 import br.com.cristal.erp.config.usuarioConfig.CustomUserDetails;
 import br.com.cristal.erp.config.usuarioConfig.CustomUserDetailsService;
+import br.com.cristal.erp.exception.AcessDeniedException;
 import br.com.cristal.erp.repository.usuario.model.Perfil;
 import br.com.cristal.erp.repository.usuario.model.Usuario;
 import br.com.cristal.erp.util.JWTUtility;
@@ -10,6 +11,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -18,8 +20,12 @@ import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+import springfox.documentation.spring.web.json.Json;
+
+import java.nio.file.AccessDeniedException;
 
 @WebMvcTest(AuthenticateController.class)
 public class AuthenticateControllerTest {
@@ -40,12 +46,13 @@ public class AuthenticateControllerTest {
     private CustomUserDetailsService customUserDetailsService;
 
     @Test
-    public void deveRetornarJWTResponse_QuandoSucesso() throws Exception {
+    public void deveCriarAuthenticateObject_QuandoSucesso() throws Exception {
 
         Usuario usuario = criarUsuario();
 
         Mockito.when(customUserDetailsService.loadUserByEmail(Mockito.any(String.class)))
                         .thenReturn(criarCustomUserDetails());
+
         Mockito.when(customUserDetailsService
                 .loadUserByEmailAndReturnsUsuario(Mockito.any())).thenReturn(usuario);
 
@@ -67,10 +74,25 @@ public class AuthenticateControllerTest {
         Assertions.assertEquals(authentication_created.getCredentials(), usuario.getSenha());
     }
 
-    public CustomUserDetails criarCustomUserDetails(){
+    @Test
+    public void deveLancarExceptionEmAuthenticate_QuandoSucesso() throws Exception {
+
+        Mockito.when(authenticationManager.authenticate(Mockito.any(UsernamePasswordAuthenticationToken.class)))
+                .thenThrow(new AcessDeniedException("Falha na autenticação"));
+
+       mockMvc.perform(MockMvcRequestBuilders.post("/authenticate")
+                .content(String.valueOf(new JSONObject()))
+                .contentType(MediaType.APPLICATION_JSON)
+        ).andExpect(MockMvcResultMatchers.status().is4xxClientError())
+               .andExpect(MockMvcResultMatchers.status().isForbidden());
+
+        Mockito.verifyNoInteractions(customUserDetailsService);
+        Mockito.verifyNoInteractions(jwtUtility);
+    }
+
+    public CustomUserDetails criarCustomUserDetails() {
         CustomUserDetails custom_details = new CustomUserDetails
                 (criarUsuario());
-
         return custom_details;
     }
 
@@ -80,7 +102,6 @@ public class AuthenticateControllerTest {
                 "usuario@gmail.com",
                 "senha",
                 Perfil.CANDIDATO);
-
         return usuario;
     }
 
