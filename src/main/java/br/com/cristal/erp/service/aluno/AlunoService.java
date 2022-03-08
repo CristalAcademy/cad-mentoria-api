@@ -15,6 +15,7 @@ import br.com.cristal.erp.repository.usuario.model.Usuario;
 import br.com.cristal.erp.service.usuario.UsuarioService;
 import br.com.cristal.erp.util.JWTUtility;
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

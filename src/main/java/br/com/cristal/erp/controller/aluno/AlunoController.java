@@ -4,6 +4,7 @@ import br.com.cristal.erp.controller.aluno.dto.AlunoRequest;
 import br.com.cristal.erp.controller.aluno.dto.AlunoResponse;
 import br.com.cristal.erp.repository.aluno.filter.AlunoFiltro;
 import br.com.cristal.erp.service.aluno.AlunoService;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.http.ResponseEntity;
