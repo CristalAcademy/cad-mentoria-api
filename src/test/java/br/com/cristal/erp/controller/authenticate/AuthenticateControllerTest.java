@@ -11,7 +11,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Captor;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -20,12 +19,8 @@ import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-import springfox.documentation.spring.web.json.Json;
-
-import java.nio.file.AccessDeniedException;
 
 @WebMvcTest(AuthenticateController.class)
 public class AuthenticateControllerTest {
@@ -34,7 +29,7 @@ public class AuthenticateControllerTest {
     private MockMvc mockMvc;
 
     @Captor
-    private ArgumentCaptor<UsernamePasswordAuthenticationToken> captor_authentication;
+    private ArgumentCaptor<UsernamePasswordAuthenticationToken> captorAuthentication;
 
     @MockBean
     private JWTUtility jwtUtility;
@@ -56,22 +51,22 @@ public class AuthenticateControllerTest {
         Mockito.when(customUserDetailsService
                 .loadUserByEmailAndReturnsUsuario(Mockito.any())).thenReturn(usuario);
 
-        JSONObject json_object = new JSONObject();
-        json_object.put("email", "usuario@gmail.com");
-        json_object.put("senha", "senha");
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("email", "usuario@gmail.com");
+        jsonObject.put("senha", "senha");
 
         this.mockMvc.perform(MockMvcRequestBuilders
                 .post("/authenticate")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(String.valueOf(json_object)))
+                        .content(String.valueOf(jsonObject)))
                 .andExpect(MockMvcResultMatchers.status().isOk());
 
-        Mockito.verify(authenticationManager).authenticate(captor_authentication.capture());
-        UsernamePasswordAuthenticationToken authentication_created = captor_authentication.getValue();
+        Mockito.verify(authenticationManager).authenticate(captorAuthentication.capture());
+        UsernamePasswordAuthenticationToken authenticationCreated = captorAuthentication.getValue();
 
         Mockito.verify(authenticationManager).authenticate(Mockito.any(UsernamePasswordAuthenticationToken.class));
-        Assertions.assertEquals(authentication_created.getPrincipal(), usuario.getEmail());
-        Assertions.assertEquals(authentication_created.getCredentials(), usuario.getSenha());
+        Assertions.assertEquals(authenticationCreated.getPrincipal(), usuario.getEmail());
+        Assertions.assertEquals(authenticationCreated.getCredentials(), usuario.getSenha());
     }
 
     @Test
@@ -91,9 +86,9 @@ public class AuthenticateControllerTest {
     }
 
     public CustomUserDetails criarCustomUserDetails() {
-        CustomUserDetails custom_details = new CustomUserDetails
+        CustomUserDetails customUserDetails = new CustomUserDetails
                 (criarUsuario());
-        return custom_details;
+        return customUserDetails;
     }
 
     public Usuario criarUsuario(){
@@ -104,5 +99,4 @@ public class AuthenticateControllerTest {
                 Perfil.CANDIDATO);
         return usuario;
     }
-
 }
