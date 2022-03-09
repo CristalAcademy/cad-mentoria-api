@@ -25,7 +25,6 @@ public class CandidatoController {
 
     private final CandidatoService candidatoService;
 
-
     @GetMapping(value = "/{id}")
     public ResponseEntity<CandidatoResponseBody> buscarId(@PathVariable Long id) {
         return ResponseEntity.ok(candidatoService.findByIdOrThrowBadRequestExceptionReturnsCandidatoResponse(id));

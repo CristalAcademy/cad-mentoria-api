@@ -41,7 +41,7 @@ public class AuthenticateControllerTest {
     private CustomUserDetailsService customUserDetailsService;
 
     @Test
-    public void deveCriarAuthenticateObject_QuandoSucesso() throws Exception {
+    public void deveCriarAuthenticateObjectQuandoSucesso() throws Exception {
 
         Usuario usuario = criarUsuario();
 
@@ -70,7 +70,7 @@ public class AuthenticateControllerTest {
     }
 
     @Test
-    public void deveLancarExceptionEmAuthenticate_QuandoSucesso() throws Exception {
+    public void deveLancarExceptionEmAuthenticateQuandoSucesso() throws Exception {
 
         Mockito.when(authenticationManager.authenticate(Mockito.any(UsernamePasswordAuthenticationToken.class)))
                 .thenThrow(new AcessDeniedException("Falha na autenticação"));
