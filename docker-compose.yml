@@ -8,5 +8,3 @@
         - POSTGRES_PASSWORD=cristal
         - POSTGRES_USER=cristal
         - POSTGRES_DB=postgres
-      volumes:
-        - ./src/main/resources/postgres_testdata:/var/lib/postgres
